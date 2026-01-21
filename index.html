@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog On Sleeve – Candyd. Awaken. Think.</title>
+    <meta name="description" content="A visual journal of ideas, design, and inspiration. Each post is paired with original artwork. Explore, awaken, think.">
+    <meta name="keywords" content="blog, art, design, inspiration, visual storytelling, creative journal">
+    <meta property="og:title" content="Blog On Sleeve – Candyd. Awaken. Think.">
+    <meta property="og:description" content="A gallery-like blog where every entry is an artwork.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://blogonsleeve.com/">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #fff; font-family: sans-serif; overflow-x: hidden; }
+        
+        /* ===== BROW BAR - FIXED TO STAY VISIBLE ===== */
+        #container {
+            position: fixed;
+            top: 0;
+            left: 100vw;
+            width: 100vw;
+            animation: travelDesktop 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            z-index: 10001;
+        }
+        
+        #bar {
+            width: 100%;
+            height: 35px;
+            background: #000;
+            clip-path: inset(0 4px 0 0);
+        }
+
+        @keyframes travelDesktop {
+            0% { left: 100vw; width: 100vw; }
+            40% { left: 80px; width: 100vw; }
+            100% { left: 80px; width: var(--name-width); }
+        }
+
+        /* ===== CHAOTIC 4-PIECE LOGO ANIMATION ===== */
+        .logo-animation-container {
+            position: absolute;
+            top: 110px;
+            left: 80px;
+            width: 200px;
+            height: 146px;
+            opacity: 0;
+            animation: fadeInContainer 1s 1s forwards;
+            z-index: 100;
+        }
+
+        .logo-part {
+            position: absolute;
+        }
+
+        /* BL - DRAMATIC FALLING FLIP */
+        #bl {
+            top: -400px;
+            left: 2;
+            width: 59px;
+            height: 61px;
+            transform-origin: center center;
+            animation: blDramaticFlip 3.8s 1.0s cubic-bezier(0.1, 0.8, 0.2, 1.4) forwards;
+            z-index: 102;
+        }
+
+        @keyframes blDramaticFlip {
+            0% {
+                top: -400px;
+                transform: rotateX(0deg) scale(1.2);
+                opacity: 0;
+            }
+            20% {
+                transform: rotateX(360deg) scale(1.1);
+                opacity: 1;
+                top: -200px;
+            }
+            40% {
+                transform: rotateX(720deg) scale(1);
+                top: -50px;
+            }
+            60% {
+                transform: rotateX(1080deg) scale(0.95);
+                top: 160px;
+            }
+            75% {
+                transform: rotateX(1260deg) scale(1.02);
+                top: 40px;
+            }
+            85% {
+                transform: rotateX(1350deg) scale(0.98);
+                top: 100px;
+            }
+            95% {
+                transform: rotateX(1410deg) scale(1.01);
+                top: 10px;
+            }
+            100% {
+                top: 0;
+                transform: rotateX(1440deg) scale(1);
+                opacity: 1;
+            }
+        }
+#og {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    width: 882px;
+    height: 549px;
+    transform-origin: center center;
+    transform: 
+        translate(-50%, -50%)
+        translateZ(-2000px)
+        scale(3)
+        rotateX(10deg)
+        rotateY(0deg); /* ADDED: Start at 0° */
+    opacity: 0;
+    animation: ogFlyThrough 3.2s 3.5s cubic-bezier(0.6, 0.3, 0.1, 0.1) forwards;
+    z-index: 101;
+}
+        @keyframes ogFlyThrough {
+    /* Start: Giant, behind camera */
+    0% {
+        opacity: 0;
+        z-index: 103;
+    }
+    /* Smooth approach without overshoot */
+    20% {
+        transform: 
+            translate(-50%, -50%)
+            translateZ(-3000px)
+            scale(10.2)
+            rotateX(0deg)
+            rotateY(0deg) /* ADDED: Half spin */
+            rotateZ(20deg);
+            opacity: 0.2;
+        z-index: 103;
+    }
+    /* Direct move to final position */
+    45% {
+        transform: 
+            translate(0, 0)
+            translateZ(0px)
+            scale(7)
+            rotateX(0deg)
+            rotateY(0deg)
+            rotateZ(70deg); /* ADDED: Full 540° spin */
+        top: 0;
+        left: 53px;
+        width: 98px;
+        height: 61px;
+        opacity: 1;
+        z-index: 101;
+    }
+    /* Final settle */
+    100% {
+        transform: 
+            translate(0, 0)
+            translateZ(0px)
+            scale(1)
+            rotateX(0deg)
+            rotateY(0deg)
+            rotateZ(1800deg); /* ADDED: Keep 540° */
+        top: 0;
+        left: 53px;
+        width: 98px;
+        height: 61px;
+        opacity: 1;
+        z-index: 101;
+    }
+}
+
+        /* ON - CLOCK SPIN FROM RIGHT */
+        #on {
+            top: 0;
+            left: 110vw;
+            width:56px;
+            height: 61px;
+            transform-origin: center center;
+            animation: onClockSpin 4.9s 2.5s ease-in-out forwards;
+            z-index: 102;
+        }
+
+        @keyframes onClockSpin {
+            0% {
+                left: 120vw;
+                transform: rotate(0deg) scale(1.3);
+                opacity: 0;
+            }
+            20% {
+                transform: rotate(-180deg) scale(1.2);
+                opacity: 0.8;
+                left: 600px;
+            }
+            40% {
+                transform: rotate(180deg) scale(1.1);
+                opacity: 1;
+                left: 300px;
+            }
+            60% {
+                transform: rotate(-360deg) scale(1.05);
+                left: 100px;
+            }
+            75% {
+                transform: rotate(180deg) scale(1.02);
+                left: 180px;
+            }
+            85% {
+                transform: rotate(-90deg) scale(0.99);
+                left: 165px;
+            }
+            100% {
+                left: 154px;
+                transform: rotate(360deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* SLEEVE - RISING REVERSE-FLIP FROM BOTTOM */
+        #sleeve {
+            top: calc(100vh + 200px);
+            left: 0;
+            width: 200px;
+            height: 85px;
+            transform-origin: center center;
+            animation: sleeveRisingFlip 1.0s 3.3s cubic-bezier(0.1, 0.8, 0.2, 0.1) forwards;
+            z-index: 100;
+        }
+
+        @keyframes sleeveRisingFlip {
+    /* Phase 1: Deep below start */
+    0% {
+        top: calc(100vh + 200px);
+        transform: rotateX(-1440deg) scale(1.2);
+        opacity: 0;
+    }
+    /* Phase 2: Rising with flips */
+    25% {
+        transform: rotateX(-1080deg) scale(1.1);
+        opacity: 0.8;
+        top: calc(100vh - 100px);
+    }
+    50% {
+        transform: rotateX(-720deg) scale(1);
+        opacity: 1;
+        top: calc(100vh - 250px);
+    }
+    /* Phase 3: Direct to position - NO OVERSHOOT */
+    75% {
+        transform: rotateX(-360deg) scale(1);
+        top: 80px; /* Goes directly near target */
+    }
+    /* Phase 4: Final settle */
+    90% {
+        transform: rotateX(-90deg) scale(1);
+        top: 64px;
+    }
+    100% {
+        top: 61px; /* Final position */
+        transform: rotateX(0deg) scale(1); /* Upright */
+        opacity: 1;
+    }
+        }
+
+        @keyframes fadeInContainer {
+            to { opacity: 1; }
+        }
+
+        /* ===== HEART LOGO - STARTS AFTER LOGO ANIMATION ===== */
+        .heart-logo {
+            position: fixed;
+            top: 95px;
+            left: 100vw;
+            width: 95px;
+            height: 95px;
+            transform: translateY(-50%);
+            z-index: 10010;
+            pointer-events: none;
+            /* HEART STARTS AFTER LOGO ENDS (10s) */
+            animation: 
+                speedIn 0.6s linear 6.7s forwards,
+                tiltTravel 0.6s linear 6.8s forwards,
+                bounceBack 0.65s linear 7.45s forwards,
+                tiltBounce 0.5s linear 7.25s forwards,
+                ballerinaSpin 0.9s cubic-bezier(0.6, 0.9, 0.7, 0.95) 7.55s forwards;
+        }
+        
+        .heart-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform-origin: center;
+        }
+        
+        /* Heart animation keyframes */
+        @keyframes speedIn {
+            0% { left: 100vw; }
+            100% { left: calc(80px + var(--logo-width, 200px) - 55px); }
+        }
+        
+        @keyframes bounceBack {
+            0% { left: calc(80px + var(--logo-width, 200px) - 75px); }
+            100% { left: calc(80px + var(--logo-width, 200px) - 35px); }
+        }
+        
+        @keyframes tiltTravel {
+            0% { transform: translateY(-50%) rotate(90deg); }
+            100% { transform: translateY(-50%) rotate(-50deg); }
+        }
+        
+        @keyframes tiltBounce {
+            0% { transform: translateY(-50%) rotate(-50deg); }
+            100% { transform: translateY(-50%) rotate(-20deg); }
+        }
+        
+        @keyframes ballerinaSpin {
+            0% { transform: translateY(-50%) rotate(-15deg) rotateY(0deg); }
+            100% { transform: translateY(-50%) rotate(-30deg) rotateY(7200deg); }
+        }
+
+        /* ===== TAGLINE - MOVED DOWN 40px ===== */
+        .tagline {
+            position: fixed;
+            top: 262px; /* Changed from 225px to 265px (+40px) */
+            left: 82px;
+            z-index: 10003;
+            opacity: 0;
+            /* TAGLINE STARTS AFTER HEART (12s) */
+            animation: fadeIn 1.5s ease 8.5s forwards !important;
+        }
+        
+        .tagline-text {
+            font-size: 14.0px;
+            text-transform: sentence case;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            line-height: 2;
+            margin-bottom: 1.25px;
+        }
+        
+        .cyan { color: #04baed; }
+        .yellow { color: #ffb300; }
+        .black { color: #000; }
+        
+        .tagline-lines {
+            display: none;
+            flex-direction: column;
+            gap: 1px;
+        }
+        
+        .tagline-line {
+            height: 1px;
+            background: #666;
+            width: 199px;
+        }
+
+        /* ===== CONTROLS - 100px RIGHT FROM END OF BROW ===== */
+        .controls-container {
+            position: fixed;
+            top: 0;
+            /* Position: brow left (80px) + brow width (var) + 100px gap */
+            left: 300px;
+            height: 33px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            z-index: 10005;
+            opacity: 0;
+            
+            animation: fadeIn 0.8s ease 10.5s forwards;
+        }
+        
+        .search-line {
+            width: 160px;
+            height: 1px;
+            
+            background: #ccc;
+            position: relative;
+            margin-top: 31px;
+        }
+        
+        .search-line-input {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: calc(100% - 20px);
+            background: transparent;
+            border: none;
+            font-size: 12px;
+            color: #777;
+            
+            padding: 0;
+        }
+        
+        .search-line-input::placeholder {
+            color: #cdcdcd;
+            
+        }
+         .hamburger {
+            width: 35px;
+            height: 35px;
+    
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger-line {
+            width: 18px;
+            height: 2px;
+            background: #dedede;
+        }
+        
+        .hamburger:hover .hamburger-line {
+            background: #eabc03;
+        }
+        /* Dropdown */
+        .sort-dropdown {
+    position: absolute;
+    top: 0;
+    left: 198px;
+    background: #000;
+    color: #eabb00;
+    font-size: 9px;
+    min-width: 90px; /* Remove fixed width */
+    border-radius: 0px;
+    padding: 3px; /* Remove vertical padding */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10006;
+    /* Add these for horizontal layout: */
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    height: 33px; /* Match height if desired */
+    align-items: center;
+}
+
+/* Adjust options for horizontal layout */
+.sort-dropdown .sort-option {
+    padding: 0 8px; /* Horizontal padding only */
+    height: 33px; /* Match container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+        
+        .sort-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        
+       
+        
+        .sort-option:hover {
+            background: #333;
+            opacity: 0.7;
+        }
+        
+        .sort-icon {
+            font-size: 9.5px;
+            width: 12px;
+            text-align: center;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Hide mobile-only on desktop by default */
+        .mobile-only {
+            display: none;
+        }
+
+        /* ===== HORIZONTAL BLOG LAYOUT ===== */
+        .horizontal-scroll-container {
+            position: absolute;
+            top: 440px; /* Adjusted from 400px to 440px (+40px to match tagline move) */
+            left: 80px;
+            right: 0;
+            bottom: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 50px;
+            opacity: 0;
+            /* BLOG STARTS AFTER CONTROLS (13s) */
+            animation: fadeIn 2s ease 9.5s forwards;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+        }
+        
+        .horizontal-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .horizontal-scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        
+        .blog-horizontal-grid {
+            display: flex;
+            height: 50vh;
+            padding-right: 80px;
+            align-items: center;
+        }
+        
+        /* BLOG CARDS COLUMNS */
+        .blog-column {
+            width: 400px;
+            height: 800px;
+            flex-shrink: 0;
+            margin-right: 40px;
+            transition: transform 0.3s ease;
+        }
+        
+        .blog-column:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Portrait Blog Card */
+        .blog-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .duotone-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .color-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+        
+        .blog-card:hover .duotone-image {
+            opacity: 0;
+        }
+        
+        .blog-card:hover .color-image {
+            opacity: 1;
+        }
+        
+        .blog-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            z-index: 1;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+            transition: opacity 0.5s ease;
+        }
+        
+        .blog-card:hover .blog-title {
+            opacity: 0;
+        }
+        
+        /* ===== SCROLL HINT ===== */
+        .scroll-hint {
+            position: fixed;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 50px;
+            background: #ccc;
+            border-radius: 4px;
+            opacity: 0;
+            /* SCROLL HINT STARTS WITH BLOG (13s) */
+            animation: fadeIn 0.8s ease 13s forwards;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        
+        .scroll-hint:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+            text-align: right;
+            color: #666;
+            opacity: 0;
+            /* FOOTER STARTS AFTER BLOG (13.5s) */
+            animation: fadeIn 1s ease 13.5s forwards;
+            font-size: 9.5px;
+        }
+       /* Magnify icons */
+.magnify-icon {
+    position: absolute;
+    top: -29px;
+    left: 0;
+    font-size: 17px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.mobile-magnify {
+    position: absolute;
+    top: 35%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 13.5px;
+    color: #717171;
+    cursor: pointer;
+}
+
+.magnify-icon:hover {
+    color: #00bbea;
+}
+
+/* Remove placeholder text */
+.search-line-input::placeholder,
+.brow-search input::placeholder {
+    color: transparent;
+}
+        
+
+       /* ===== MOBILE STYLES ===== */
+        @media (max-width: 768px) {
+            /* Show mobile-only on mobile */
+            .mobile-only {
+                display: block;
+            }
+            
+            /* Adjust logo animation container for mobile */
+            .logo-animation-container {
+                top: 55px;
+                left: 5px;
+                transform: scale(0.85);
+            }
+            
+            #container {
+                animation: travelMobile 2.5s cubic-bezier(0.2, 0, 0.1, 1) forwards;
+                z-index: 10001;
+            }
+            @keyframes travelMobile {
+        0% { left: 100vw; width: 100vw; }
+        40% { left: 20px; width: 100vw; }
+        100% { left: 20px; width: 200px; } /* Fixed width */
+    }
+            #bar {
+                height: 22px;
+                clip-path: inset(0 35px 0 0);
+            }
+            
+            .heart-logo {
+                top: 60px;
+                width:68px;
+                height: 68px;
+                /* Mobile heart timing adjusted */
+                animation: dashToLeft 0.6s ease 6.9s forwards,
+                    tiltTravel 0.6s linear 6.9s forwards,
+                    bounceFromLeft 0.6s ease 7.3s forwards,
+                    ballerinaSpin 0.9s cubic-bezier(0.6, 0.73, 0.8, 0.95) 7.4s forwards;
+                transform: translateY(-50%);
+            }
+            
+            @keyframes dashToLeft {
+                0% { left: 100vw; transform: translateY(-50%) rotate(90deg); }
+                100% { left: -10px; transform: translateY(-50%) rotate(-30deg); }
+            }
+            
+            @keyframes bounceFromLeft {
+                0% { left: 10px; transform: translateY(-50%) rotate(-30deg); }
+                50% { left: 80px; transform: translateY(-50%) rotate(-10deg); }
+                100% { left: 165px; transform: translateY(-50%) rotate(-30deg); }
+            }
+            
+            /* Mobile tagline - moved down 40px */
+            .tagline {
+                top: 199px; /* Changed from 92px to 132px (+40px) */
+                left: 21px;
+                animation: fadeIn 0.3s ease 9.25s forwards;
+            }
+
+            .tagline-text {
+                font-size: 11.9px;
+                letter-spacing: 0.15em;
+                line-height: 1.5;
+            }
+
+            .tagline-lines {
+                display: none;
+            }
+            
+            /* Mobile brow controls */
+            .brow-controls {
+                position: fixed;
+                top: 1px;
+                left: 30px;
+                display: flex;
+                gap: 15px;
+                z-index: 10005;
+                
+                opacity: 0;
+            /* CONTROLS START AFTER TAGLINE (12.5s) */
+            animation: fadeIn 1s ease 10.85s forwards;
+            }
+            
+            .brow-search {
+                width: 115px;
+            }
+            
+            .brow-search input {
+                width: 100%;
+                background: transparent;
+                border: none;
+                border-bottom: 1px solid #717171;
+                color: #6e6e6e;
+                font-size: 10px;
+                font-style: italic;
+                padding: 2px 0 2px 20px;
+            }
+            
+            .brow-hamburger {
+                width: 18px;
+                height: 19px;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background: transparent;
+                gap: 3px;
+            }
+            
+            .brow-hamburger div {
+                
+                height: 2px;
+                background: #242424;
+            }
+            
+            /* Hide desktop controls on mobile */
+            .controls-container {
+                display: none;
+            }
+            /* Mobile dropdown */
+.mobile-dropdown {
+    position: absolute;
+    top: -1px;
+    left: 100%;
+    margin-left: 3px;
+    margin-top: 0;
+    background: #1d1c1c;
+    color: #ffdc18;
+    font-size: 8px;
+    min-width: 80px;
+    height: 22px;
+    border-radius: 0px;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10006;
+    display: flex;
+    flex-direction: row; /* Horizontal line */
+    white-space: nowrap; /* Keep in one line */
+    align-items: center;
+}
+.mobile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0); /* Slide to position (visible) */
+}
+.mobile-dropdown .sort-option {
+    padding: 0 8px; /* Adjust padding */
+    height: 22px;
+    display: flex;
+    flex-direction: column; /* Keep icon/text stacked vertically */
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+}
+
+/* Mobile dropdown text */
+.sort-text {
+    font-size: 8px;
+    margin-left: 0px;
+}
+            /* Mobile blog layout adjustments */
+            .horizontal-scroll-container {
+                top: 260px; /* Adjusted from 260px to 300px (+40px) */
+                left: 20px;
+                right: 20px;
+                height: 60vh;
+                animation: fadeIn 1s ease 10s forwards;
+            }
+            
+            .blog-horizontal-grid {
+                height: auto;
+                padding-right: 20px;
+            }
+            
+            /* Scale down blog columns to 60% */
+            .blog-column {
+                width: 240px;
+                height: 480px;
+                margin-right: 15px;
+            }
+            
+            /* Show part of next column */
+            .blog-column:not(:first-child) {
+                margin-left: -80px;
+            }
+            
+            /* Adjust blog title */
+            .blog-title {
+                padding: 20px;
+                font-size: 1.5rem;
+            }
+            
+            /* Adjust scroll hint */
+            .scroll-hint {
+                right: 15px;
+                width: 30px;
+                height: 40px;
+                animation: fadeIn 0.8s ease 10.5s forwards;
+            }
+            
+            /* Mobile footer */
+            footer {
+                animation: fadeIn 1s ease 11s forwards;
+            }
+        }
+    
+        /* Fix mobile overlapping blog titles */
+@media (max-width: 768px) {
+    /* Remove card overlap on mobile */
+    .blog-column:not(:first-child) {
+        margin-left: 0; /* Remove the -80px overlap */
+    }
+    
+    /* Add proper spacing instead */
+    .blog-column {
+        margin-right: 20px; /* Increase spacing */
+    }
+    
+    /* Ensure titles stay within their cards */
+    .blog-card {
+        position: relative;
+        overflow: hidden; /* Contain titles */
+    }
+    
+    .blog-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10; /* Higher than images */
+        /* Add background for better readability */
+        background: linear-gradient(to top, 
+            rgba(0,0,0,0.85) 0%, 
+            rgba(0,0,0,0.6) 50%, 
+            rgba(0,0,0,0) 100%);
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Brown bar - NOW STAYS VISIBLE -->
+    <div id="container">
+        <div id="bar"></div>
+    </div>
+<audio id="bubbleSound" preload="auto">
+    <source src="Assets/BubbleSpin.mp3" type="audio/mpeg">
+</audio>
+    <!-- Chaotic 4-Piece Logo Animation -->
+    <div class="logo-animation-container">
+        <img id="bl" class="logo-part" src="assets/bl.png" alt="BL">
+        <img id="og" class="logo-part" src="Assets/OGx9.png" alt="OG">
+        <img id="on" class="logo-part" src="assets/on.png" alt="ON">
+        <img id="sleeve" class="logo-part" src="assets/sleeve.png" alt="SLEEVE">
+    </div>
+
+    <!-- Tagline - MOVED DOWN 40px -->
+    <div class="tagline">
+        <div class="tagline-text">
+            <span class="cyan">Candyd.</span>
+            <span class="yellow"> Awaken.</span>
+            <span class="black"> Think.</span>
+        </div>
+        <div class="tagline-lines">
+            <div class="tagline-line"></div>
+            <div class="tagline-line"></div>
+            <div class="tagline-line"></div>
+        </div>
+    </div>
+
+    <!-- Heart Logo -->
+    <div class="heart-logo">
+        <img src="Assets/BOS_Heart_Logo.png" alt="Heart" width="58" height="58">
+    </div>
+    
+    <!-- Mobile Brow Controls -->
+    <div class="mobile-only">
+    <div class="brow-controls">
+        <div class="brow-search">
+            <input type="text" placeholder=" " id="mobileSearch">
+            <span class="mobile-magnify">⌕</span>
+        </div>
+        <div class="brow-hamburger" id="mobileHamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <!-- Add inside mobile hamburger div -->
+<div class="mobile-dropdown" id="mobileDropdown">
+    <div class="sort-option" data-sort="alphabetical">
+        <span class="sort-icon">a-z</span>
+        
+    </div>
+    <div class="sort-option" data-sort="chronological">
+        <span class="sort-icon">🕒</span>
+        
+    </div>
+    <div class="sort-option" data-sort="popular">
+        <span class="sort-icon">★</span>
+       
+    </div>
+</div>
+    </div>
+</div>
+    
+    <div class="controls-container">
+    <div class="search-line">
+        <input type="text" placeholder=" " class="search-line-input" id="desktopSearch">
+        <span class="magnify-icon">⌕</span>
+    </div>
+    
+    <div class="hamburger" id="hamburger">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+    
+    <div class="sort-dropdown" id="sortDropdown">
+        <div class="sort-option" data-sort="alphabetical">
+            <span class="sort-icon">a-z</span>
+        </div>
+        <div class="sort-option" data-sort="chronological">
+            <span class="sort-icon">🕒</span>
+        </div>
+        <div class="sort-option" data-sort="popular">
+            <span class="sort-icon">★</span>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Blog On Sleeve. Words + Art. www.ericchuan.design</p>
+    </footer>
+    <!-- Horizontal Blog Scroll - MOVED DOWN 40px -->
+<div class="horizontal-scroll-container" id="scrollContainer">
+    <div class="blog-horizontal-grid" id="blogGrid">
+        <!-- Blog Column 1 -->
+        <div class="blog-column" data-title="You'll Buy Everything Apple, Won't You?" data-date="2025-03-15" data-views="1200">
+            <a href="/blog/Apple-Must-Buy/" class="blog-card">
+                <div class="image-container">
+                    <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003A.jpg" alt="Apple Blog" class="duotone-image">
+                    <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003B.jpg" alt="Apple Blog" class="color-image">
+                    <div class="blog-title">You'll Buy Everything Apple, Won't You?</div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Blog Column 2 - NEW -->
+        <div class="blog-column" data-title="The Art of Digital Minimalism" data-date="2025-02-28" data-views="950">
+            <a href="/blog/Digital-Minimalism/" class="blog-card">
+                <div class="image-container">
+                    <!-- Using placeholder images - replace with actual images -->
+                    <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Digital Minimalism" class="duotone-image">
+                    <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Digital Minimalism" class="color-image">
+                    <div class="blog-title">The Art of Digital Minimalism</div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Blog Column 3 - NEW -->
+        <div class="blog-column" data-title="Why We Still Need Physical Books" data-date="2025-01-20" data-views="1800">
+            <a href="/blog/Physical-Books/" class="blog-card">
+                <div class="image-container">
+                    <!-- Using placeholder images - replace with actual images -->
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Physical Books" class="duotone-image">
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Physical Books" class="color-image">
+                    <div class="blog-title">Why We Still Need Physical Books</div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Blog Column 4 - EXTRA (optional) -->
+        <div class="blog-column" data-title="Future of AI in Creative Work" data-date="2024-12-10" data-views="2100">
+            <a href="/blog/AI-Creative-Work/" class="blog-card">
+                <div class="image-container">
+                    <!-- Using placeholder images - replace with actual images -->
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Creative Work" class="duotone-image">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Creative Work" class="color-image">
+                    <div class="blog-title">Future of AI in Creative Work</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- Scroll Hint -->
+    <div class="scroll-hint" id="scrollHint"></div>
+
+    <script>
+        // Play bubble sound when BL animation starts
+setTimeout(() => {
+    const bubbleSound = document.getElementById('bubbleSound');
+    if (bubbleSound) {
+        bubbleSound.volume = 0.2; // Set low volume (30%)
+        bubbleSound.play().catch(e => {
+            console.log("Audio play failed (user interaction required):", e);
+        });
+    }
+}, 0); 
+
+// Match BL start time: 1.0s
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('container');
+            const hamburger = document.getElementById('hamburger');
+            const sortDropdown = document.getElementById('sortDropdown');
+            const mobileHamburger = document.getElementById('mobileHamburger');
+            const blogGrid = document.getElementById('blogGrid');
+            const blogColumns = document.querySelectorAll('.blog-column');
+            const scrollHint = document.querySelector('.scroll-hint');
+            const scrollContainer = document.getElementById('scrollContainer');
+            
+            // Set the brow width to match logo animation container (200px)
+            container.style.setProperty('--name-width', '200px');
+            
+            // Desktop hamburger dropdown toggle
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sortDropdown.classList.toggle('show');
+            });
+            
+            // Mobile hamburger
+if (mobileHamburger) {
+    const mobileDropdown = document.getElementById('mobileDropdown');
+    
+    mobileHamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (mobileDropdown) {
+            mobileDropdown.classList.toggle('show');
+        }
+    });
+    
+    // Close mobile dropdown when clicking outside
+    document.addEventListener('click', function() {
+        if (mobileDropdown) {
+            mobileDropdown.classList.remove('show');
+        }
+    });
+}
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                sortDropdown.classList.remove('show');
+            });
+            
+            // Sort functionality
+            document.querySelectorAll('.sort-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const sortType = this.dataset.sort;
+                    
+                    // Visual feedback
+                    document.querySelectorAll('.sort-option').forEach(o => o.style.background = '');
+                    this.style.background = '#333';
+                    
+                    // Sort logic
+                    const sorted = [...blogColumns].sort((a, b) => {
+                        if (sortType === 'alphabetical') {
+                            return a.dataset.title.localeCompare(b.dataset.title);
+                        } else if (sortType === 'chronological') {
+                            return new Date(b.dataset.date) - new Date(a.dataset.date);
+                        } else if (sortType === 'popular') {
+                            return b.dataset.views - a.dataset.views;
+                        }
+                        return 0;
+                    });
+                    
+                    // Reorder grid
+                    sorted.forEach(col => blogGrid.appendChild(col));
+                    
+                    // Close dropdown
+                    sortDropdown.classList.remove('show');
+                });
+            });
+            
+            // Desktop search
+            document.getElementById('desktopSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    alert('Desktop search: ' + this.value);
+                }
+            });
+            
+            // Mobile search
+            const mobileSearch = document.getElementById('mobileSearch');
+            if (mobileSearch) {
+                mobileSearch.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        alert('Mobile search: ' + this.value);
+                    }
+                });            }
+            
+            // Scroll hint click
+            if (scrollHint) {
+                scrollHint.addEventListener('click', function() {
+                    scrollContainer.scrollLeft += 450;
+                });
+            }
+            
+            // Smooth horizontal scroll with mouse wheel
+            if (scrollContainer) {
+                scrollContainer.addEventListener('wheel', function(e) {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        this.scrollLeft += e.deltaY;
+                    }
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
