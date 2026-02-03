@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSlave</title>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body, html {
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            justify-content: center;
+            animation: fadeToGreen 2s 4s forwards;
+        }
+        
+        /* Horizontal scroller */
+        #scroller {
+            display: flex;
+            width: calc(100vw + 100vw + 200px);
+            height: 100vh;
+            overflow-x: auto;
+            
+            scroll-behavior: smooth;
+        }
+
+        .scene {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #scene-britney {
+            width: calc(100vw + 200px);
+        }
+
+        /* 3D container */
+        #scroll-3d-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            
+        }
+
+        /* Content container */
+        #animation-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1400px;
+            height: 900px;
+            transform-style: preserve-3d;
+        }
+
+        
+
+        /* Text depth */
+        #we-text { --z-depth: -150px; }
+        #are-text { --z-depth: -100px; }
+        #sla-text { --z-depth: -50px; }
+        .a-letter { --z-depth: 0px; }
+        #ves-text { --z-depth: 50px; }
+        #four-text { --z-depth: 100px; }
+        #hoo-text { --z-depth: 150px; }
+
+        
+
+        /* Britney SM (small) for entrance */
+        #britney {
+            position: absolute;
+            width: 520px;
+            height: 1050px;
+            left: 400px;
+            top: -100px;
+            z-index: 100;
+            opacity: 0;
+            transform-origin: center 600px;
+        }
+        
+        #britney-glow {
+            position: absolute;
+            width: 520px;
+            height: 1050px;
+            left: 400px;
+            top: -100px;
+            z-index: 101;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #britney[src*="Brit-LG.png"] {
+    image-rendering: auto;
+    transform: translate3d(0,0,0);
+}
+        /* Clickable area */
+        #waist-click-area {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            left: 668px;
+            top: 415px;
+            z-index: 1000;
+            cursor: pointer;
+            pointer-events: auto;
+            background: transparent;
+            border: none;
+        }
+        
+        /* Text positions - YOUR EXACT POSITIONS */
+        #we-text {
+            position: absolute;
+            width: 789px;
+            height: 626px;
+            left: -81px;
+            top: -8px;
+            z-index: 20;
+            opacity: 0;
+        }
+        
+        #are-text {
+            position: absolute;
+            width: 195px;
+            height: 110px;
+            left: 300px;
+            top: 308px;
+            opacity: 0;
+        }
+        
+        #sla-text {
+            position: absolute;
+            width: 375px;
+            height: 265px;
+            left: 83px;
+            top: 367px;
+            z-index: 10;
+            opacity: 0;
+        }
+        
+        .a-letter {
+            position: absolute;
+            width: 125px;
+            height: 140px;
+            top: 430px;
+            z-index: 10;
+            opacity: 0;
+        }
+        
+        #a1 { left: 394px; }
+        #a2 { left: 513px; }
+        #a3 { left: 629px; }
+        #a4 { left: 740px; }
+        #a5 { left: 740px; }
+        #a6 { left: 740px; }
+        
+        #ves-text {
+            position: absolute;
+            width: 330px;
+            height: 133px;
+            left: 841px;
+            top: 432px;
+            opacity: 0;
+        }
+        
+        #four-text {
+            position: absolute;
+            width: 215px;
+            height: 315px;
+            left: 433px;
+            top: 574px;
+            opacity: 0;
+            z-index: 1005;
+        }
+        
+        #hoo-text {
+            position: absolute;
+            width: 620px;
+            height: 248px;
+            left: 640px;
+            top: 585px;
+            opacity: 0;
+            z-index: 1005;
+        }
+        
+        /* YOUR ORIGINAL ANIMATIONS - EXACTLY AS YOU HAD THEM */
+        @keyframes fadeToGreen {
+            to { background: #2eb912; }
+        }
+        
+        @keyframes britneyEnter {
+            0% { 
+                transform: translateX(1000px) translateY(-400px) scale(0.6) rotateY(0deg); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translateX(0) translateY(0) scale(1) rotateY(1440deg); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes textSpinIn {
+            0% { 
+                transform: perspective(500px) rotateY(720deg) scale(0.5); 
+                opacity: 0; 
+            }
+            70% {
+                transform: perspective(500px) rotateY(0deg) scale(1.1);
+            }
+            100% { 
+                transform: perspective(500px) rotateY(0deg) scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes slideFromRight {
+            0% { transform: translateX(100vw); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slowGlowPulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+       #white-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#white-loading img {
+    width: 90px;
+}
+/* Audio control hover effects */
+.control-icon {
+    transition: all 0.2s ease;a
+    opacity: 1;
+    transform: scale(1);
+}
+
+.control-icon.dimmed {
+    opacity: 0.5;
+    transform: scale(0.8);
+}
+/* Note: Hover effects are now handled by JavaScript */
+        
+    </style>
+</head>
+<body>
+    <div id="scroller">
+        <section class="scene" id="scene-britney">
+            <audio id="music" loop><source src="Assets/Apple/WeRS4U.mp3" type="audio/mpeg"></audio>
+            
+            <div id="scroll-3d-stage">
+                
+                <!-- Content -->
+                <div id="animation-stage">
+                
+                    
+                    <!-- Britney SM for entrance -->
+                    <img id="britney" src="Assets/Apple/Brit-SM.png" alt="Britney">
+                    <img id="britney-glow" src="Assets/Apple/Brit-SM-glow.png" alt="Glowing Britney">
+                    <div id="waist-click-area" title="Click to listen"></div>
+                    
+                    <!-- Text elements -->
+                    <img id="we-text" src="Assets/Apple/We.png" alt="We">
+                    <img id="are-text" src="Assets/Apple/are.png" alt="are">
+                    <img id="sla-text" src="Assets/Apple/Sla.png" alt="Sla">
+                    <img id="a1" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="a2" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="a3" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="a4" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="a5" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="a6" class="a-letter" src="Assets/Apple/a.png" alt="a">
+                    <img id="ves-text" src="Assets/Apple/ves.png" alt="ves">
+                    <img id="four-text" src="Assets/Apple/4.png" alt="4">
+                    <img id="hoo-text" src="Assets/Apple/Hoo.png" alt="U">
+                </div>
+            </div>
+        </section>
+        
+        <section class="scene" id="scene-mirror">
+            <video id="horror-video" style="
+                position: absolute;
+                height: 100vh;
+                width: auto;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+                pointer-events: none;
+                min-width: 100vw;
+                z-index: 0; 
+           " loop>  
+                <source src="Assets/Apple/horrorThunder.mp4" type="video/mp4">
+            </video>
+            
+            <!-- MIRROR WILL FADE IN HERE -->
+            <img id="mirror" src="Assets/Apple/Mirror-A.jpg" style="
+                position: absolute;
+                width: 380px;
+                height: auto;
+                left: 180px;
+                top: 100px;
+                opacity: 0;
+                z-index: 3;
+                transition: opacity 8s ease-in;
+            ">
+            
+            <!-- QUEEN SEQUENCE IMAGES (hidden initially) -->
+            <img id="queen-sm-1" class="queen-img" src="Assets/Apple/Queen-SM-1.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-sm-2" class="queen-img" src="Assets/Apple/Queen-SM-2.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-sm-3" class="queen-img" src="Assets/Apple/Queen-SM-3.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-lg-1" class="queen-img" src="Assets/Apple/Queen-LG-1.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-lg-2" class="queen-img" src="Assets/Apple/Queen-LG-2.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-lg-3" class="queen-img" src="Assets/Apple/Queen-LG-3.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            <img id="queen-lg-4" class="queen-img" src="Assets/Apple/Queen-LG-4.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 4; pointer-events: none;">
+            
+            <!-- SUBTITLES -->
+        <div id="subtitle-container" style="
+    position: absolute;
+    width: 100%;
+    left: 195px;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between words */
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+">
+    <img id="subtitle-cults" src="Assets/Apple/Cults.png" style="height: 55px; width: auto; opacity: 0;">
+    <img id="subtitle-hypno" src="Assets/Apple/Hypnostalgia.png" style="height: 55px; width: auto; opacity: 0;">
+    <img id="subtitle-obedience" src="Assets/Apple/Obedience.png" style="height: 55px; width: auto; opacity: 0;">
+</div>
+            
+            <!-- FINAL CRACKED MIRROR -->
+            <img id="mirror-cracked" src="Assets/Apple/Mirror-C.jpg" style="position: absolute; width: 380px; height: auto; left: 180px; top: 100px; opacity: 0; z-index: 6; pointer-events: none;">
+            
+            <!-- OBEY COMMAND & GLASS CRACK -->
+<img id="obey-command" src="Assets/Apple/obeyme.png" style="
+    position: absolute;
+    height: 250px;
+    width: auto;
+    left: 65%;
+    top: 40%;
+    transform: translateX(-50%);
+    opacity: 0;
+    z-index: 7;
+    pointer-events: none;
+    ">
+    <audio id="article-audio" src="Assets/Apple/AppleRead.mp3" preload="auto"></audio>
+<audio id="glass-crack-audio" src="Assets/Apple/obeyglass.mp3" preload="auto"></audio>
+            
+            
+            <div style="width:100vw; height:100vh; background:#000; color:#fff; display:grid; place-items:center; z-index: 1;">
+            
+            </div>
+        </section>
+        
+                  <!-- SCENE 3 - FINAL SCENE (hidden initially) -->
+          <div id="scene-final" style="
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              z-index: 1000;
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 2s ease-in;
+          ">
+              <!-- Black background -->
+              <div style="position: absolute; width: 100vw; height: 100vh; background: black; z-index: 1;"></div>
+              
+                             <!-- Queen image on left, positioned for space -->
+                <img src="Assets/Apple/queentim.jpg" style="
+                    position: absolute;
+                    width: auto;
+                    height: calc(100vh + 400px);
+                    left: -345px;
+                    top: -150px;
+                    object-fit: cover;
+                    object-position: top;
+                    z-index: 2;
+                ">
+                
+                <!-- Heyzine embed on right -->
+                <iframe id="heyzine-embed" src="https://heyzine.com/flip-book/109aff41db.html" style="
+                    position: absolute;
+                    width: 920px;
+                    height: 930px;
+                    right: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: none;
+                    border-radius: 0px;
+                    box-shadow: 0 0 0 0 rgba(0,0,0,0.5);
+                    z-index: 3;
+                "></iframe>
+          </div>
+
+    </div>
+          
+    
+    <!-- Scroll hint - will appear here, AFTER the scroller -->
+    <img id="scroll-hint" src="Assets/Apple/scrollR.gif" alt="Scroll right" style="
+        position: fixed;
+        bottom: 50px;
+        right: 150px;
+        width: 100px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1000;
+        transition: opacity 1s;
+    ">
+
+    <!-- Audio Player - FIXED POSITION OUTSIDE SCROLLER -->
+    <div id="audio-player" style="
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        z-index: 10000;
+        opacity: 0;
+        pointer-events: none;
+    ">
+        <!-- Listen button (initial state) -->
+        <img id="listen-btn" src="Assets/Apple/Listen.png" style="
+            width: 43.5px;
+            height: 50px;
+            cursor: pointer;
+            display: block;
+        ">
+        
+        <!-- Control icons (hidden initially) -->
+<div id="control-icons" style="
+    display: none;
+    flex-direction: row;
+    position: relative;
+">
+    <img id="rewind-btn" src="Assets/Apple/Rewind.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
+    <img id="stop-btn" src="Assets/Apple/Stop.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
+    <img id="play-btn" src="Assets/Apple/Play.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
+    <img id="forward-btn" src="Assets/Apple/Forward.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
+</div>
+        <!-- Progress bar -->
+<div id="progress-container" style="
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    display: none;
+">
+    <div id="progress-bar" style="
+        width: 0%;
+        height: 100%;
+        background: #2eb912;
+        transition: width 0.1s linear;
+    "></div>
+</div>
+    </div>
+
+    <script>
+        // ===== TIMING CONTROL =====
+        const TIMING = {
+            heartSpin: 4000,
+            britneyEntrance: 2000,
+            britneySpinStart: 2000,
+            weAppear: 6000,
+            areAppear: 6500,
+            slaAppear: 7000,
+            aStart: 7500,
+            aInterval: 300,
+            vesAppear: 9000,
+            fourAppear: 9500,
+            hooAppear: 10000,
+            glowStart: 12000,
+            britneySpinStop: 11000,
+            shakeInterval: 12000,
+            shakeStart: 12000 
+        };
+        
+        // ===== STATE =====
+        let musicActivated = false;
+        let currentBritneyImage = "Assets/Apple/Brit-SM.png";
+        let videoPlaying = false;
+        let zoomStarted = false;
+        let isArticlePlaying = false;
+        
+        // ===== DOM ELEMENTS =====
+        const music = document.getElementById('music');
+        const britney = document.getElementById('britney');
+        const britneyGlow = document.getElementById('britney-glow');
+        const waistClick = document.getElementById('waist-click-area');
+        const weText = document.getElementById('we-text');
+        const areText = document.getElementById('are-text');
+        const slaText = document.getElementById('sla-text');
+        const vesText = document.getElementById('ves-text');
+        const fourText = document.getElementById('four-text');
+        const hooText = document.getElementById('hoo-text');
+        const aLetters = [
+            document.getElementById('a1'), document.getElementById('a2'),
+            document.getElementById('a3'), document.getElementById('a4'),
+            document.getElementById('a5'), document.getElementById('a6')
+        ];
+        const scrollHint = document.getElementById('scroll-hint');
+        
+        const horrorVideo = document.getElementById('horror-video');
+        const mirror = document.getElementById('mirror');
+        
+        // QUEEN SEQUENCE ELEMENTS
+        const queenSm1 = document.getElementById('queen-sm-1');
+        const queenSm2 = document.getElementById('queen-sm-2');
+        const queenSm3 = document.getElementById('queen-sm-3');
+        const queenLg1 = document.getElementById('queen-lg-1');
+        const queenLg2 = document.getElementById('queen-lg-2');
+        const queenLg3 = document.getElementById('queen-lg-3');
+        const queenLg4 = document.getElementById('queen-lg-4');
+        const subtitleCults = document.getElementById('subtitle-cults');
+        const subtitleHypno = document.getElementById('subtitle-hypno');
+        const subtitleObedience = document.getElementById('subtitle-obedience');
+        const mirrorCracked = document.getElementById('mirror-cracked');
+        const obeyCommand = document.getElementById('obey-command');
+        const glassCrackAudio = document.getElementById('glass-crack-audio');
+        const moreAudio = document.getElementById('more-audio');
+        const sceneFinal = document.getElementById('scene-final');
+        const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
+        // AUDIO PLAYER ELEMENTS
+        const audioPlayer = document.getElementById('audio-player');
+        const articleAudio = document.getElementById('article-audio');
+        const listenBtn = document.getElementById('listen-btn');
+        const controlIcons = document.getElementById('control-icons');
+        const rewindBtn = document.getElementById('rewind-btn');
+        const playBtn = document.getElementById('play-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        
+        const scroller = document.getElementById('scroller');
+        const scroll3dStage = document.getElementById('scroll-3d-stage');
+        
+        // Preload video
+        if (horrorVideo) horrorVideo.load();
+        
+        // ===== INITIALIZE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            music.volume = 0.4;
+            setTimeout(() => {
+                document.getElementById('white-loading').style.display = 'none';
+                startAnimationSequence();
+            }, TIMING.heartSpin);
+            
+            setupEventListeners();
+            setupListenButton();
+        });
+        
+        function startAnimationSequence() {
+            // 1. Britney entrance with spin
+            setTimeout(() => {
+                britney.style.animation = `britneyEnter 4s ease-out forwards`;
+                britney.style.opacity = '1';
+            }, TIMING.britneyEntrance);
+            
+            // 2. Stop spinning at specified time
+            setTimeout(() => {
+                britney.style.animation = 'none';
+                britney.style.transition = 'none';
+                britney.style.transform = 'rotateY(0deg)';
+            }, TIMING.britneySpinStop);
+            
+            // 3. Text animations
+            setTimeout(() => animateWe(), TIMING.weAppear);
+            setTimeout(() => animateAre(), TIMING.areAppear);
+            setTimeout(() => animateSla(), TIMING.slaAppear);
+            
+            aLetters.forEach((a, index) => {
+                setTimeout(() => {
+                    animateALetter(a, index);
+                }, TIMING.aStart + (index * TIMING.aInterval));
+            });
+            
+            setTimeout(() => animateVes(), TIMING.vesAppear);
+            setTimeout(() => animateFour(), TIMING.fourAppear);
+            setTimeout(() => animateHoo(), TIMING.hooAppear);
+            
+            // 4. Glow starts
+            setTimeout(() => {
+                startGlow();
+            }, TIMING.glowStart);
+            
+            // Show scroll hint after glow starts
+            setTimeout(() => {
+                if (scrollHint) scrollHint.style.opacity = '1';
+            }, TIMING.glowStart + 1000);
+            
+        }
+        
+        function animateWe() {
+            weText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            weText.style.opacity = '1';
+        }
+        
+        function animateAre() {
+            areText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            areText.style.opacity = '1';
+        }
+        
+        function animateSla() {
+            slaText.style.animation = `slideFromRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+            slaText.style.opacity = '1';
+        }
+        
+        function animateALetter(a, index) {
+            if (!a) return;
+            const duration = 1500 + Math.random() * 1000;
+            a.style.animation = `slideFromRight ${duration}ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+            a.style.opacity = '1';
+        }
+        
+        function animateVes() {
+            vesText.style.animation = `slideFromRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+            vesText.style.opacity = '1';
+        }
+        
+        function animateFour() {
+            fourText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            fourText.style.opacity = '1';
+        }
+        
+        function animateHoo() {
+            hooText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            hooText.style.opacity = '1';
+        }
+        
+        function startGlow() {
+            britneyGlow.style.animation = `slowGlowPulse 6s ease-in-out infinite`;
+            britneyGlow.style.opacity = '1';
+            waistClick.style.pointerEvents = 'auto';
+        }
+        
+        function activateMusic() {
+            if (musicActivated) return;
+            musicActivated = true;
+            
+            britneyGlow.style.animation = 'none';
+            britneyGlow.style.opacity = '0';
+            waistClick.style.pointerEvents = 'none';
+            
+            // Switch to off image
+            britney.src = "Assets/Apple/Brit-SM-off.png";
+            currentBritneyImage = "Assets/Apple/Brit-SM-off.png";
+            
+            music.play().catch(e => {
+                console.log("Autoplay blocked - user interaction needed");
+            });
+            
+        }
+        
+        // ===== MIRROR SEQUENCE FUNCTION =====
+        function startMirrorSequence() {
+            // Hide initial mirror
+            if (mirror) mirror.style.opacity = '0';
+            
+            // QUEEN SM SEQUENCE (each for 1.5 seconds)
+            setTimeout(() => { queenSm1.style.opacity = '1'; }, 0);
+            setTimeout(() => { queenSm1.style.opacity = '0'; queenSm2.style.opacity = '1'; }, 1500);
+            
+            // First show container (but keep images hidden)
+            setTimeout(() => {
+                document.getElementById('subtitle-container').style.opacity = '1';
+                
+                // First word appears immediately
+                subtitleCults.style.opacity = '1';
+                
+                // Second word appears 2 seconds later
+                setTimeout(() => {
+                    subtitleHypno.style.opacity = '1';
+                }, 2000);
+                
+                // Third word appears 4 seconds later
+                setTimeout(() => {
+                    subtitleObedience.style.opacity = '1';
+                    
+                    // 1 SECOND LATER: Play glass crack audio
+                    setTimeout(() => {
+                        // Play the glass crack sound
+                        if (glassCrackAudio) {
+                            glassCrackAudio.currentTime = 0;
+                            glassCrackAudio.play().catch(e => console.log("Audio autoplay blocked"));
+                        }
+                        
+                                              // 1 SECOND AFTER AUDIO: Show "OBEY ME!" command
+                      setTimeout(() => {
+                          if (obeyCommand) {
+                              obeyCommand.style.opacity = '1';
+                          }
+                      }, 1000);
+                      
+                  }, 1000); // 1 sec after obedience appears
+                  
+              }, 4000);
+              
+          }, 1500); // Container appears 1.5s into Queen sequence
+          
+          // Continue Queen sequence
+          setTimeout(() => { queenSm2.style.opacity = '0'; queenSm3.style.opacity = '1'; }, 3000);
+          setTimeout(() => { queenSm3.style.opacity = '0'; queenLg1.style.opacity = '1'; }, 4500);
+          setTimeout(() => { queenLg1.style.opacity = '0'; queenLg2.style.opacity = '1'; }, 6000);
+          setTimeout(() => { queenLg2.style.opacity = '0'; queenLg3.style.opacity = '1'; }, 7500);
+          setTimeout(() => { queenLg3.style.opacity = '0'; queenLg4.style.opacity = '1'; }, 9000);
+          
+          // 2 SECONDS AFTER OBEY ME! appears: Show cracked mirror
+          setTimeout(() => {
+              queenLg4.style.opacity = '0';
+              
+              // 2 seconds after obey command: cracked mirror appears
+              setTimeout(() => {
+                  mirrorCracked.style.opacity = '1';
+                  
+                  // Show audio player after cracked mirror appears
+                  setTimeout(() => {
+                      if (audioPlayer) {
+                          audioPlayer.style.opacity = '1';
+                          audioPlayer.style.pointerEvents = 'auto';
+                      }
+                  }, 1000);
+              }, 200); // 0.2 sec delay after obey command
+              
+          }, 10500); // Total timing
+          
+          // 3 SECONDS AFTER MIRROR SEQUENCE ENDS: TRANSITION TO FINAL SCENE
+          setTimeout(() => {
+              // Wait 3 seconds, then fade out scene 2 elements
+              setTimeout(() => {
+                  // Fade out scene 2 elements
+                  [mirrorCracked, obeyCommand, subtitleCults, subtitleHypno, 
+                   subtitleObedience, document.getElementById('subtitle-container')].forEach(el => {
+                      if (el) el.style.opacity = '0';
+                  });
+                  
+                  // Wait a bit, then fade in scene 3 and play audio
+                  setTimeout(() => {
+                      if (sceneFinal) {
+                          sceneFinal.style.opacity = '1';
+                          sceneFinal.style.pointerEvents = 'auto';
+                          
+                          // Play the "More" audio
+                          if (moreAudio) {
+                              moreAudio.currentTime = 0;
+                              moreAudio.play().catch(e => console.log("Audio autoplay blocked"));
+                          }
+                      }
+                  }, 500);
+                  
+              }, 3000); // Wait 3 seconds after mirror sequence ends
+              
+          }, 10500); // Wait for mirror sequence to complete
+      }
+      
+      // ===== AUDIO PLAYER FUNCTIONS =====
+function setupAudioPlayerEvents() {
+    console.log("Setting up audio player events");
+    
+    // Get fresh button references
+    const rewindBtn = document.getElementById('rewind-btn');
+    const playBtn = document.getElementById('play-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const forwardBtn = document.getElementById('forward-btn');
+    
+    const controls = [rewindBtn, playBtn, stopBtn, forwardBtn].filter(btn => btn);
+    
+    // Set all buttons to normal
+    controls.forEach(btn => {
+        btn.style.opacity = '1';
+        btn.style.transform = 'scale(1)';
+    });
+    
+       // Hover effects: Simple version
+     controls.forEach(icon => {
+         icon.addEventListener('mouseenter', function() {
+             // Only apply hover effects if audio is NOT playing
+             if (!isArticlePlaying || icon !== playBtn) {
+                 controls.forEach(btn => {
+                     if (btn !== icon) {
+                         btn.style.opacity = '0.6';
+                         btn.style.transform = 'scale(0.8)';
+                     }
+                 });
+             }
+         });
+         
+         icon.addEventListener('mouseleave', function() {
+             // Always reset all buttons on mouseleave
+             controls.forEach(btn => {
+                 btn.style.opacity = '1';
+                 btn.style.transform = 'scale(1)';
+             });
+             
+             // If audio is playing, keep play button at 1.1
+             if (playBtn && isArticlePlaying) {
+                 playBtn.style.opacity = '1';
+                 playBtn.style.transform = 'scale(1.1)';
+             }
+         });
+     });
+    // PLAY BUTTON
+        // PLAY BUTTON - NO STYLING IN CLICK
+    playBtn.addEventListener('click', function() {
+        if (articleAudio.paused) {
+            articleAudio.play();
+            isArticlePlaying = true;
+        } else {
+            articleAudio.pause();
+            isArticlePlaying = false;
+        }
+    });
+    stopBtn.addEventListener('click', function() {
+    articleAudio.pause();
+    articleAudio.currentTime = 0;
+    playBtn.src = "Assets/Apple/Play.png";
+});
+    // STOP BUTTON - NO STYLING IN CLICK
+    stopBtn.addEventListener('click', function() {
+        articleAudio.pause();
+        articleAudio.currentTime = 0;
+        isArticlePlaying = false;
+    });
+    
+    // REWIND BUTTON - NO STYLING IN CLICK  
+    rewindBtn.addEventListener('click', function() {
+        articleAudio.currentTime = Math.max(0, articleAudio.currentTime - 10);
+    });
+    
+    // FORWARD BUTTON - NO STYLING IN CLICK
+    forwardBtn.addEventListener('click', function() {
+        articleAudio.currentTime = Math.min(articleAudio.duration, articleAudio.currentTime + 10);
+    });
+    
+    articleAudio.addEventListener('play', function() {
+    isArticlePlaying = true;
+    playBtn.src = "Assets/Apple/Pause.png";
+    playBtn.style.transform = 'scale(1.1)';
+});
+
+articleAudio.addEventListener('pause', function() {
+    isArticlePlaying = false;
+    playBtn.src = "Assets/Apple/Play.png";
+    playBtn.style.transform = 'scale(1)';
+});
+
+articleAudio.addEventListener('ended', function() {
+    isArticlePlaying = false;
+    playBtn.src = "Assets/Apple/Play.png";
+    playBtn.style.transform = 'scale(1)';
+});
+
+    
+    articleAudio.addEventListener('ended', function() {
+        isArticlePlaying = false;
+        playBtn.style.opacity = '1';
+        playBtn.style.transform = 'scale(1)';
+    });
+    
+    // PROGRESS BAR
+    articleAudio.addEventListener('timeupdate', function() {
+        if (articleAudio.duration) {
+            const progress = (articleAudio.currentTime / articleAudio.duration) * 100;
+            progressBar.style.width = progress + '%';
+        }
+    });
+    
+    articleAudio.addEventListener('play', function() {
+        progressContainer.style.display = 'block';
+    });
+    
+    articleAudio.addEventListener('ended', function() {
+        progressBar.style.width = '0%';
+    });
+}
+
+// ===== LISTEN BUTTON HANDLER =====
+function setupListenButton() {
+    if (listenBtn) {
+        listenBtn.addEventListener('click', function() {
+            // Switch to control buttons
+            listenBtn.style.display = 'none';
+            controlIcons.style.display = 'flex';
+            progressContainer.style.display = 'block';
+            
+            // Setup events
+            setupAudioPlayerEvents();
+            
+            // Try to play automatically
+            articleAudio.play().catch(e => {
+                console.log("Autoplay blocked - user needs to click play");
+            });
+            isArticlePlaying = true;
+        });
+    }
+}
+
+function setupEventListeners() {
+    waistClick.addEventListener('click', activateMusic);
+}
+
+// ===== SCROLL ANIMATION =====
+const maxScroll = 90;
+let hasSwitchedToLarge = false;
+
+scroller.addEventListener('scroll', () => {
+    const scrollX = scroller.scrollLeft;
+    const progress = Math.min(scrollX / maxScroll, 1);
+    
+    // Kill glow immediately on scroll
+    if (britneyGlow) {
+        britneyGlow.style.animation = 'none';
+        britneyGlow.style.opacity = '0';
+    }
+    
+    // Hide scroll hint
+    if (scrollHint && scrollHint.style.opacity !== '0') {
+        scrollHint.style.opacity = '0';
+    }
+    
+    // 1. Rotate the whole stage 0-90°
+    scroll3dStage.style.transform = `rotateY(${progress * 90}deg)`;
+    
+    // 3. Switch to Brit-LG.png at 50% scroll
+    if (progress > 0.15 && !hasSwitchedToLarge) {
+        britney.src = "Assets/Apple/Brit-LG.png";
+        currentBritneyImage = "Assets/Apple/Brit-LG.png";
+        hasSwitchedToLarge = true;
+    }
+    
+    // 4. Scale Britney 15x (starts at 25% scroll)
+    if (britney) {
+        const scaleProgress = Math.max(0, (progress - 0.50) / 0.5);
+        const scale = 1 + (scaleProgress * 6.5); // 1x to 15x
+        const verticalAdjust = scaleProgress * 1000;
+        const horizontalAdjust = scaleProgress * 2400; 
+        
+        // Britney with counter-rotation
+        britney.style.transform = `translate3d(${horizontalAdjust}px, ${verticalAdjust}px, 0) rotateY(${-progress * 90}deg) scale(${scale})`;
+        britney.style.transformOrigin = "center 800px";
+        
+        // 4 and Hoo with counter-rotation
+        if (fourText) {
+            fourText.style.transform = `translateZ(100px) scale(${scale}) rotateY(${-progress * 90}deg)`;
+            fourText.style.transformOrigin = "center 600px";
+        }
+        
+        if (hooText) {
+            hooText.style.transform = `translateZ(150px) scale(${scale}) rotateY(${-progress * 90}deg)`;
+            hooText.style.transformOrigin = "center 600px";
+        }
+    }
+    
+    // 5. Rotate text elements individually
+    const rotatingTexts = [
+        { el: weText, delay: 0.0 },
+        { el: areText, delay: 0.1 },  
+        { el: slaText, delay: 0.2 },
+        { el: vesText, delay: 0.3 }
+    ];
+    
+    rotatingTexts.forEach(({ el, delay }) => {
+        if (el) {
+            const textProgress = Math.max(0, (progress - delay) / (1 - delay));
+            const textRotation = textProgress * 90;
+            el.style.transform = `rotateY(${textRotation}deg)`;
+        }
+    });
+    
+    // 6. Rotate "a" letters
+    aLetters.forEach((a, index) => {
+        if (a) {
+            const aDelay = 0.15 + (index * 0.05);
+            const aProgress = Math.max(0, (progress - aDelay) / (1 - aDelay));
+            const aRotation = aProgress * 90;
+            a.style.transform = `rotateY(${aRotation}deg)`;
+        }
+    });
+    
+    // ===== VIDEO: Loop + Zoom to lower portion + Fade to black =====
+    const sceneWidth = window.innerWidth;
+    
+    if (scrollX > sceneWidth && !videoPlaying) {
+        videoPlaying = true;
+        
+        // 1. Fit height, show video
+        horrorVideo.style.opacity = '1';
+        horrorVideo.style.zIndex = '2';
+        
+        // 2. Pause Britney music when entering scene 2
+        if (music && !music.paused) {
+            music.pause();
+        }
+        
+        // 3. Play and loop video
+        horrorVideo.play().catch(e => console.log("Video autoplay blocked"));
+        
+        // 4. After 2 seconds, start zooming + fading + mirror fade-in
+        setTimeout(() => {
+            if (videoPlaying && !zoomStarted) {
+                zoomStarted = true;
+                
+                // Zoom toward lower-left
+                horrorVideo.style.transformOrigin = '92% 130%';
+                horrorVideo.style.transition = 'transform 17.5s linear, opacity 9s linear 1.5s';
+                horrorVideo.style.transform = 'translate(-50%, -50%) scale(2.29)';
+                horrorVideo.style.opacity = '0'; // Video fades out
+                
+                // Start mirror fade-in 7.5 seconds after zoom starts
+                setTimeout(() => {
+                    if (videoPlaying && mirror) {
+                        mirror.style.opacity = '1'; // Mirror fades in
+                        
+                        // Start Queen sequence 1 second after mirror appears
+                        setTimeout(startMirrorSequence, 1000);
+                    }
+                }, 8500);
+                
+                // Stop video when completely faded out
+                setTimeout(() => {
+                    if (videoPlaying) {
+                        horrorVideo.pause();
+                        horrorVideo.currentTime = 0;
+                    }
+                }, 14000);
+            }
+        }, 2000);
+        
+        // Simple snap: if 80% into the gap, snap to scene 2
+        if (scrollX > sceneWidth * 0.6 && scrollX < sceneWidth && !videoPlaying) {
+            scroller.scrollTo({
+                left: sceneWidth + 5,
+                behavior: 'smooth'
+            });
+        }
+        
+    } else if (scrollX <= sceneWidth && videoPlaying) {
+        videoPlaying = false;
+        zoomStarted = false;
+        
+        // Reset everything
+        horrorVideo.style.opacity = '0';
+        horrorVideo.style.zIndex = '0';
+        horrorVideo.style.transformOrigin = 'center center';
+        horrorVideo.style.transform = 'translate(-50%, -50%) scale(1)';
+        horrorVideo.style.transition = 'none';
+        horrorVideo.pause();
+        horrorVideo.currentTime = 0;
+        
+        // Hide all mirror sequence elements when leaving scene 2
+        [mirror, queenSm1, queenSm2, queenSm3, queenLg1, queenLg2, queenLg3, queenLg4, 
+         subtitleCults, subtitleHypno, subtitleObedience].forEach(el => {
+            if (el) el.style.opacity = '0';
+        });
+        
+        // Hide audio player when leaving scene 2
+        if (audioPlayer) {
+            audioPlayer.style.opacity = '0';
+            audioPlayer.style.pointerEvents = 'none';
+            
+            // Reset to listen button
+            listenBtn.style.display = 'block';
+            controlIcons.style.display = 'none';
+            
+            // Stop audio if playing
+            if (articleAudio) {
+                articleAudio.pause();
+                articleAudio.currentTime = 0;
+                isArticlePlaying = false;
+            }
+        }
+        
+        // Resume Britney music when returning to scene 1
+        if (music && musicActivated && music.paused) {
+            music.play().catch(e => console.log("Music resume blocked"));
+        }
+    }
+});
+    </script>
+    
+    <div id="white-loading">
+        <img src="Assets/Apple/BOS_Heart_LogoGrow.gif" alt="Loading">
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog On Sleeve – Candyd. Awaken. Think.</title>
@@ -11,6 +12,7 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://blogonsleeve.com/">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #fff; font-family: sans-serif; overflow-x: hidden; }
@@ -484,7 +486,7 @@
         /* ===== HORIZONTAL BLOG LAYOUT ===== */
         .horizontal-scroll-container {
             position: absolute;
-            top: 440px; /* Adjusted from 400px to 440px (+40px to match tagline move) */
+            top: 380px; /* Adjusted from 400px to 440px (+40px to match tagline move) */
             left: 80px;
             right: 0;
             bottom: 0;
@@ -521,8 +523,8 @@
         
         /* BLOG CARDS COLUMNS */
         .blog-column {
-            width: 400px;
-            height: 800px;
+            width: 300px;
+            height: 600px;
             flex-shrink: 0;
             margin-right: 40px;
             transition: transform 0.3s ease;
@@ -619,14 +621,25 @@
         /* ===== FOOTER ===== */
         footer {
             position: fixed;
-            bottom: 10px;
+            bottom: 15px;
             right: 20px;
             text-align: right;
-            color: #666;
             opacity: 0;
+             color: #777878;
+            letter-spacing: 0.1em;
+            
             /* FOOTER STARTS AFTER BLOG (13.5s) */
-            animation: fadeIn 1s ease 13.5s forwards;
+            animation: fadeIn 1s ease 10.5s forwards;
             font-size: 9.5px;
+        }
+           footer a {
+            color: #016fa2;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: #ae00a8;
         }
        /* Magnify icons */
 .magnify-icon {
@@ -739,7 +752,7 @@
                 
                 opacity: 0;
             /* CONTROLS START AFTER TAGLINE (12.5s) */
-            animation: fadeIn 1s ease 10.85s forwards;
+            animation: fadeIn 1s ease 10.45s forwards;
             }
             
             .brow-search {
@@ -753,8 +766,7 @@
                 border-bottom: 1px solid #717171;
                 color: #6e6e6e;
                 font-size: 10px;
-                font-style: italic;
-                padding: 2px 0 2px 20px;
+                padding: 3px 0 1px 20px;
             }
             
             .brow-hamburger {
@@ -824,7 +836,7 @@
 }
             /* Mobile blog layout adjustments */
             .horizontal-scroll-container {
-                top: 260px; /* Adjusted from 260px to 300px (+40px) */
+                top: 200px; /* Adjusted from 260px to 300px (+40px) */
                 left: 20px;
                 right: 20px;
                 height: 60vh;
@@ -864,7 +876,7 @@
             
             /* Mobile footer */
             footer {
-                animation: fadeIn 1s ease 11s forwards;
+                animation: fadeIn 1s ease 9s forwards;
             }
         }
     
@@ -993,18 +1005,18 @@
 
     <!-- Footer -->
     <footer>
-        <p>© 2026 Blog On Sleeve. Words + Art. www.ericchuan.design</p>
+        © 2026 Blog On Sleeve. Words + Art. <a href="https://www.ericchuan.design">www.ericchuan.design</a>
     </footer>
     <!-- Horizontal Blog Scroll - MOVED DOWN 40px -->
 <div class="horizontal-scroll-container" id="scrollContainer">
     <div class="blog-horizontal-grid" id="blogGrid">
         <!-- Blog Column 1 -->
-        <div class="blog-column" data-title="You'll Buy Everything Apple, Won't You?" data-date="2025-03-15" data-views="1200">
-            <a href="/blog/Apple-Must-Buy/" class="blog-card">
+        <div class="blog-column" data-title="iSlave" data-date="2025-03-15" data-views="1200">
+            <a href="20260202_islave.html/" class="blog-card">
                 <div class="image-container">
                     <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003A.jpg" alt="Apple Blog" class="duotone-image">
                     <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003B.jpg" alt="Apple Blog" class="color-image">
-                    <div class="blog-title">You'll Buy Everything Apple, Won't You?</div>
+                    <div class="blog-title"></div>
                 </div>
             </a>
         </div>
