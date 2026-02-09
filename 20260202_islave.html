@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+// Add to very top of <head> section
+window.addEventListener('beforeunload', function() {
+    // Force-stop all audio when leaving page
+    document.querySelectorAll('audio').forEach(a => {
+        a.pause();
+        a.currentTime = 0;
+    });
+});
+</script>
+    <!-- Mobile Detection & Redirect -->
+<script>
+    (function() {
+        // Check if mobile device or small screen
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        // If mobile or small screen, redirect to mobile version
+        if (isMobile || isSmallScreen) {
+            // Check if we're already on mobile page to avoid infinite redirect
+            if (!window.location.pathname.includes('mobile')) {
+                window.location.href = window.location.pathname.replace('.html', '-mobile.html') || 'mobile.html';
+            }
+        }
+    })();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iSlave</title>
-    
+    <div id="white-loading">
+        <img src="Assets/Apple/BOS_Heart_LogoGrow.gif" alt="Loading">
+    </div>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -246,7 +274,7 @@
 }
 /* Audio control hover effects */
 .control-icon {
-    transition: all 0.2s ease;a
+    transition: all 0.2s ease;
     opacity: 1;
     transform: scale(1);
 }
@@ -399,10 +427,10 @@
                 ">
                 
                 <!-- Heyzine embed on right -->
-                <iframe id="heyzine-embed" src="https://heyzine.com/flip-book/109aff41db.html" style="
+                <iframe id="heyzine-embed" src="https://heyzine.com/flip-book/f7df81f2c8.html" style="
                     position: absolute;
-                    width: 920px;
-                    height: 930px;
+                    width: 900px;
+                    height:890px;
                     right: 5px;
                     top: 50%;
                     transform: translateY(-50%);
@@ -445,35 +473,35 @@
             display: block;
         ">
         
-        <!-- Control icons (hidden initially) -->
+ <!-- Control icons (hidden initially) -->
 <div id="control-icons" style="
     display: none;
     flex-direction: row;
     position: relative;
 ">
+      <!-- Progress Bar -->
+<div id="progress-container" style="display: none;">
+    <div id="progress-bar" style="width: 0%; height: 5px; background: #2eb912;"></div>
+</div>
+<!-- After line 463, add: -->
+<div id="progress-container" style="display: none; width: 100%; height: 5px; background: gray; margin-top: 5px;">
+    <div id="progress-bar" style="width: 0%; height: 100%; background: green;"></div>
+</div>
+
+<!-- Add a duration label somewhere (maybe after progress bar) -->
+<div id="duration-label" style="display: none; color: white; font-size: 10px; text-align: center; margin-top: 2px;"></div>
     <img id="rewind-btn" src="Assets/Apple/Rewind.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
     <img id="stop-btn" src="Assets/Apple/Stop.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
     <img id="play-btn" src="Assets/Apple/Play.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
     <img id="forward-btn" src="Assets/Apple/Forward.png" class="control-icon" style="width: 43.5px; height: 50px; cursor: pointer;">
+    
+    <!-- Single Volume Button -->
+    <img id="volume-btn" src="Assets/Apple/Volume-mid.png" class="control-icon" 
+         style="width: 43.5px; height: 50px; cursor: pointer;"
+         title="Volume: Mid">
 </div>
-        <!-- Progress bar -->
-<div id="progress-container" style="
-    position: absolute;
-    top: 55px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    display: none;
-">
-    <div id="progress-bar" style="
-        width: 0%;
-        height: 100%;
-        background: #2eb912;
-        transition: width 0.1s linear;
-    "></div>
-</div>
-    </div>
+  
+        
 
     <script>
         // ===== TIMING CONTROL =====
@@ -568,7 +596,25 @@ const progressBar = document.getElementById('progress-bar');
             setupEventListeners();
             setupListenButton();
         });
-        
+        function setupListenButton() {
+    if (listenBtn) {
+        listenBtn.addEventListener('click', function() {
+            // Switch to control buttons
+            listenBtn.style.display = 'none';
+            controlIcons.style.display = 'flex';
+            progressContainer.style.display = 'block';
+            
+            // Setup ALL events (including volume)
+            setupAudioPlayerEvents();  // This now handles volume too
+            
+            // Try to play automatically
+            articleAudio.play().catch(e => {
+                console.log("Autoplay blocked - user needs to click play");
+            });
+            isArticlePlaying = true;
+        });
+    }
+}
         function startAnimationSequence() {
             // 1. Britney entrance with spin
             setTimeout(() => {
@@ -772,147 +818,145 @@ const progressBar = document.getElementById('progress-bar');
           }, 10500); // Wait for mirror sequence to complete
       }
       
-      // ===== AUDIO PLAYER FUNCTIONS =====
-function setupAudioPlayerEvents() {
-    console.log("Setting up audio player events");
+  // ===== AUDIO PLAYER FUNCTIONS (UPDATED WITH 5-STAGE VOLUME) =====
+
+  function setupAudioPlayerEvents() {
+    console.log("=== SETTING UP AUDIO PLAYER ===");
     
-    // Get fresh button references
-    const rewindBtn = document.getElementById('rewind-btn');
-    const playBtn = document.getElementById('play-btn');
-    const stopBtn = document.getElementById('stop-btn');
-    const forwardBtn = document.getElementById('forward-btn');
+    // Debug: Check if elements exist
+    const volumeBtn = document.getElementById('volume-btn');
+    console.log("Volume button found:", volumeBtn);
+    console.log("Volume button src:", volumeBtn ? volumeBtn.src : "NOT FOUND");
+    const durationLabel = document.getElementById('duration-label');
+
+articleAudio.addEventListener('loadedmetadata', function() {
+    // Format as 11.4s (one decimal place)
+    const duration = articleAudio.duration;
+    const formatted = duration.toFixed(1) + 's';
+    durationLabel.textContent = formatted;
     
-    const controls = [rewindBtn, playBtn, stopBtn, forwardBtn].filter(btn => btn);
+    // Show it
+    durationLabel.style.opacity = '1';
+});
+
+// Optional: Hide when audio hasn't loaded yet
+durationLabel.style.opacity = '0';
+articleAudio.addEventListener('canplay', function() {
+    durationLabel.style.opacity = '0.7';
+});
+    // Hover effects using event delegation
+// Track if we're inside the control area
+let isInControlArea = false;
+
+// Hover effects using event delegation
+controlIcons.addEventListener('mouseenter', function(e) {
+    if (e.target.classList.contains('control-icon')) {
+        // When entering the control area
+        isInControlArea = true;
+        
+        // Dim all buttons first
+        const allButtons = controlIcons.querySelectorAll('.control-icon');
+        allButtons.forEach(btn => {
+            btn.classList.add('dimmed');
+        });
+        
+        // Then un-dim the hovered button
+        e.target.classList.remove('dimmed');
+    }
+});
+
+controlIcons.addEventListener('mouseleave', function(e) {
+    // When leaving the control area
+    isInControlArea = false;
     
-    // Set all buttons to normal
-    controls.forEach(btn => {
-        btn.style.opacity = '1';
-        btn.style.transform = 'scale(1)';
+    // Reset all buttons to full opacity (remove dimmed class from all)
+    const allButtons = controlIcons.querySelectorAll('.control-icon');
+    allButtons.forEach(btn => {
+        btn.classList.remove('dimmed');
     });
-    
-       // Hover effects: Simple version
-     controls.forEach(icon => {
-         icon.addEventListener('mouseenter', function() {
-             // Only apply hover effects if audio is NOT playing
-             if (!isArticlePlaying || icon !== playBtn) {
-                 controls.forEach(btn => {
-                     if (btn !== icon) {
-                         btn.style.opacity = '0.6';
-                         btn.style.transform = 'scale(0.8)';
-                     }
-                 });
-             }
-         });
-         
-         icon.addEventListener('mouseleave', function() {
-             // Always reset all buttons on mouseleave
-             controls.forEach(btn => {
-                 btn.style.opacity = '1';
-                 btn.style.transform = 'scale(1)';
-             });
-             
-             // If audio is playing, keep play button at 1.1
-             if (playBtn && isArticlePlaying) {
-                 playBtn.style.opacity = '1';
-                 playBtn.style.transform = 'scale(1.1)';
-             }
-         });
-     });
-    // PLAY BUTTON
-        // PLAY BUTTON - NO STYLING IN CLICK
+});
+
+// Also handle mouseover for child elements (in case they're nested)
+controlIcons.addEventListener('mouseover', function(e) {
+    if (e.target.classList.contains('control-icon')) {
+        // Dim all buttons first
+        const allButtons = controlIcons.querySelectorAll('.control-icon');
+        allButtons.forEach(btn => {
+            btn.classList.add('dimmed');
+        });
+        
+        // Then un-dim the hovered button
+        e.target.classList.remove('dimmed');
+    }
+});
+
+// Initial state: all buttons at full opacity
+const allButtons = controlIcons.querySelectorAll('.control-icon');
+allButtons.forEach(btn => {
+    btn.classList.remove('dimmed');
+});
+
+// ===== ADD JUST THE CLICK HANDLERS =====
+
+// Play/Pause button
+if (playBtn) {
     playBtn.addEventListener('click', function() {
         if (articleAudio.paused) {
             articleAudio.play();
             isArticlePlaying = true;
+            playBtn.src = "Assets/Apple/Pause.png";
         } else {
             articleAudio.pause();
             isArticlePlaying = false;
+            playBtn.src = "Assets/Apple/Play.png";
         }
     });
-    stopBtn.addEventListener('click', function() {
-    articleAudio.pause();
-    articleAudio.currentTime = 0;
-    playBtn.src = "Assets/Apple/Play.png";
-});
-    // STOP BUTTON - NO STYLING IN CLICK
+}
+
+// Stop button  
+if (stopBtn) {
     stopBtn.addEventListener('click', function() {
         articleAudio.pause();
         articleAudio.currentTime = 0;
         isArticlePlaying = false;
+        if (playBtn) playBtn.src = "Assets/Apple/Play.png";
     });
-    
-    // REWIND BUTTON - NO STYLING IN CLICK  
+}
+
+// Rewind button
+if (rewindBtn) {
     rewindBtn.addEventListener('click', function() {
         articleAudio.currentTime = Math.max(0, articleAudio.currentTime - 10);
     });
-    
-    // FORWARD BUTTON - NO STYLING IN CLICK
+}
+
+// Forward button
+if (forwardBtn) {
     forwardBtn.addEventListener('click', function() {
         articleAudio.currentTime = Math.min(articleAudio.duration, articleAudio.currentTime + 10);
     });
-    
-    articleAudio.addEventListener('play', function() {
-    isArticlePlaying = true;
-    playBtn.src = "Assets/Apple/Pause.png";
-    playBtn.style.transform = 'scale(1.1)';
-});
-
-articleAudio.addEventListener('pause', function() {
-    isArticlePlaying = false;
-    playBtn.src = "Assets/Apple/Play.png";
-    playBtn.style.transform = 'scale(1)';
-});
-
-articleAudio.addEventListener('ended', function() {
-    isArticlePlaying = false;
-    playBtn.src = "Assets/Apple/Play.png";
-    playBtn.style.transform = 'scale(1)';
-});
-
-    
-    articleAudio.addEventListener('ended', function() {
-        isArticlePlaying = false;
-        playBtn.style.opacity = '1';
-        playBtn.style.transform = 'scale(1)';
-    });
-    
-    // PROGRESS BAR
-    articleAudio.addEventListener('timeupdate', function() {
-        if (articleAudio.duration) {
-            const progress = (articleAudio.currentTime / articleAudio.duration) * 100;
-            progressBar.style.width = progress + '%';
-        }
-    });
-    
-    articleAudio.addEventListener('play', function() {
-        progressContainer.style.display = 'block';
-    });
-    
-    articleAudio.addEventListener('ended', function() {
-        progressBar.style.width = '0%';
-    });
 }
 
-// ===== LISTEN BUTTON HANDLER =====
-function setupListenButton() {
-    if (listenBtn) {
-        listenBtn.addEventListener('click', function() {
-            // Switch to control buttons
-            listenBtn.style.display = 'none';
-            controlIcons.style.display = 'flex';
-            progressContainer.style.display = 'block';
-            
-            // Setup events
-            setupAudioPlayerEvents();
-            
-            // Try to play automatically
-            articleAudio.play().catch(e => {
-                console.log("Autoplay blocked - user needs to click play");
-            });
-            isArticlePlaying = true;
-        });
-    }
-}
+// Volume button (5-stage)
+if (volumeBtn) {
+    const volumeStages = [
+        { src: "Assets/Apple/Volume-mute.png", level: 0, title: "Volume: Off" },
+        { src: "Assets/Apple/Volume-low.png", level: 0.25, title: "Volume: Low" },
+        { src: "Assets/Apple/Volume-mid.png", level: 0.5, title: "Volume: Mid" },
+        { src: "Assets/Apple/Volume-high.png", level: 0.75, title: "Volume: High" },
+        { src: "Assets/Apple/Volume-loud.png", level: 1, title: "Volume: Max" }
+    ];
+    
+    let currentVolumeStage = 2; // Start at mid
+    
+    volumeBtn.addEventListener('click', function() {
+        currentVolumeStage = (currentVolumeStage + 1) % volumeStages.length;
+        const stage = volumeStages[currentVolumeStage];
+        volumeBtn.src = stage.src;
+        volumeBtn.title = stage.title;
+        articleAudio.volume = stage.level;
+    });
+}}
 
 function setupEventListeners() {
     waistClick.addEventListener('click', activateMusic);
@@ -1096,9 +1140,6 @@ scroller.addEventListener('scroll', () => {
     }
 });
     </script>
-    
-    <div id="white-loading">
-        <img src="Assets/Apple/BOS_Heart_LogoGrow.gif" alt="Loading">
-    </div>
+   
 </body>
 </html>

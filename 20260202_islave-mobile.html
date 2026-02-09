@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+// Add to very top of <head> section
+window.addEventListener('beforeunload', function() {
+    // Force-stop all audio when leaving page
+    document.querySelectorAll('audio').forEach(a => {
+        a.pause();
+        a.currentTime = 0;
+    });
+});
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iSlave - Mobile</title>
+    <style>
+        /* MOBILE SCALING FOR DESKTOP BRITNEY */
+
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            color: black;
+            overflow-x: hidden;
+            width: 100vw;
+            min-height: 100vh;
+            animation: fadeToGreen 2s 4s forwards;
+        }
+        
+        /* MOBILE CONTAINER */
+        .mobile-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* SECTIONS - VERTICAL STACK */
+        .section {
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* === DESKTOP BRITNEY SECTION STYLES (COPIED EXACTLY) === */
+        #section-britney {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: Transparent;
+        }
+
+        #scroll-3d-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        #animation-stage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    width: 1400px;
+    height: 900px;
+    transform-style: preserve-3d;
+}
+
+        /* Britney SM (small) for entrance */
+        #britney {
+            position: absolute;
+            width: 520px;
+            height: 1050px;
+            left: 500px;
+            top: -50px;
+            z-index: 5;
+            opacity: 0;
+            transform-origin: center 600px;
+        }
+        
+        #britney-glow {
+            position: absolute;
+            width: 520px;
+            height: 1050px;
+            left: 500px;
+            top: -50px;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Clickable area */
+        #waist-click-area {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            left: 768px;
+            top: 467px;
+            z-index: 299;
+            cursor: pointer;
+            pointer-events: auto;
+            background: transparent;
+            border: none;
+        }
+        
+        /* Text positions - EXACT DESKTOP POSITIONS */
+        #we-text {
+            position: absolute;
+            width: 500px;
+            left: 415px;
+            top: 20px;
+            z-index: 2;
+            opacity: 0;
+        }
+        
+        #are-text {
+            position: absolute;
+            width: 115px;
+            left: 605px;
+            top: 285px;
+            z-index: 205;
+            opacity: 0;
+        }
+        
+        #sla-text {
+            position: absolute;
+            width: 167px;
+            left: 502px;
+            top: 370px;
+            z-index: 220;
+            opacity: 0;
+        }
+       
+        #ves-text {
+            position: absolute;
+            width: 142px;
+            left: 634px;
+            top: 405px;
+            z-index: 120;
+            opacity: 0;
+        }
+        
+        #four-text {
+            position: absolute;
+            width: 160px;
+            left: 580px;
+            top: 465px;
+            opacity: 0;
+            z-index: 125;
+        }
+        
+        #hoo-text {
+            position: absolute;
+            width: 330px;
+            left: 512px;
+            top: 645px;
+            opacity: 0;
+            z-index: 235;
+        }
+        
+        /* YOUR ORIGINAL ANIMATIONS - EXACTLY AS YOU HAD THEM */
+        @keyframes fadeToGreen {
+            to { background: #2eb912; }
+        }
+        
+        @keyframes britneyEnter {
+            0% { 
+                transform: translateX(100px) translateY(-240px) scale(0.4) rotateY(0deg); 
+                opacity: 0; 
+            }
+            100% { 
+                transform: translateX(0) translateY(0) scale(1) rotateY(1440deg); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes textSpinIn {
+            0% { 
+                transform: perspective(500px) rotateY(720deg) scale(0.5); 
+                opacity: 0; 
+            }
+            70% {
+                transform: perspective(500px) rotateY(0deg) scale(1.1);
+            }
+            100% { 
+                transform: perspective(500px) rotateY(0deg) scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes slideFromRight {
+            0% { transform: translateX(100vw); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slowGlowPulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        #white-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        #white-loading img {
+            width: 90px;
+        }
+
+        /* === MIRROR SECTION === */
+        #section-mirror {
+            background: black;
+            color: white;
+            padding: 0 !important;
+        }
+        
+        /* Video styling - fixed to ensure it shows and plays */
+        #horror-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            left: -60px; /* Move to the right by 30px */
+            top: 0;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 2s ease;
+            transform: translateX(30px); /* Alternative method */
+        }
+        
+        /* QUEEN IMAGES - fade in over the video */
+        .queen-img {
+            position: absolute;
+            height: 100vh;
+            object-fit: contain;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 4;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* SUBTITLE CONTAINER */
+        #subtitle-container {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 30%;
+            opacity: 0;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        .subtitle-img {
+            height: 40px;
+            width: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 52%;
+            transform: translateX(-50%);
+        }
+        
+        /* FINAL CRACKED MIRROR - FLASH INSTEAD OF FADE */
+        #mirror-cracked {
+            position: absolute;
+            height: 100vh;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 6;
+            /* No transition for flash effect */
+        }
+       
+        /* === HEYZINE SECTION WITH STICKY CONTROLS === */
+        #section-final {
+            background: black;
+            position: relative;
+            padding: 0;
+        }
+        
+        .final-frame {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            border-radius: 1px;
+        }
+        
+        /* STICKY CONTROL MANUAL FOR HEYZINE - NEW LAYOUT */
+        /* Rwd  Play
+                  Vol */
+        #heyzine-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: auto auto;
+            gap: 5px;
+            align-items: start;
+            justify-items: start;
+        }
+        
+        .heyzine-btn {
+            width: 43.5px;
+            height: 50px;
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.2s;
+        }
+        
+        .heyzine-btn:active {
+            transform: scale(0.9);
+        }
+        
+        .heyzine-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Position the buttons in the grid */
+        #heyzine-rewind {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        
+        #heyzine-play {
+            grid-column: 2;
+            grid-row: 1;
+        }
+        
+        #heyzine-volume {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        /* === HEYZINE SECTION WITH STICKY CONTROLS === */
+#section-final {
+    background: black;
+    position: relative;
+    padding: 0;
+}
+
+.final-frame {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    border-radius: 1px;
+}
+
+/* STICKY CONTROL MANUAL FOR HEYZINE - NEW LAYOUT */
+/* Rwd  Play
+          Vol */
+#heyzine-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    gap: 5px;
+    align-items: start;
+    justify-items: start;
+}
+
+.heyzine-btn {
+    width: 43.5px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s;
+}
+
+.heyzine-btn:active {
+    transform: scale(0.9);
+}
+
+.heyzine-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Position the buttons in the grid */
+#heyzine-rewind {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#heyzine-play {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#heyzine-volume {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* ADD THE HOVER EFFECTS HERE - AFTER THE GRID POSITIONING */
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 480px) {
+            .section {
+                padding: 15px;
+                min-height: 90vh;
+            }
+            
+            #heyzine-controls {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .heyzine-btn {
+                width: 35px;
+                height: 40px;
+            }
+            /* Hover effects for manual buttons - non-hovered buttons shrink */
+#heyzine-controls:hover .heyzine-btn:not(:hover) {
+    opacity: 0.5;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+#heyzine-controls .heyzine-btn:hover {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.2);
+}
+        }
+        
+        /* SWIPE HINT */
+        .swipe-hint {
+            position: absolute;
+            bottom: 40px;
+            text-align: center;
+            width: 100%;
+            color: white;
+            font-size: 10px;
+            opacity: 0.8;
+            animation: pulseHint 2s ease-in-out infinite 6s;
+        }
+        
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.5; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <!-- MAIN MOBILE CONTAINER -->
+    <div class="mobile-container">
+        
+        <!-- SECTION 1: DESKTOP BRITNEY ANIMATION -->
+        <section id="section-britney" class="section">
+            <audio id="music" loop><source src="Assets/Apple/WeRS4U.mp3" type="audio/mpeg"></audio>
+            
+            <div id="scroll-3d-stage">
+                <!-- Content -->
+                <div id="animation-stage">
+                    <!-- Britney SM for entrance -->
+                    <img id="britney" src="Assets/Apple/Brit-SM.png" alt="Britney">
+                    <img id="britney-glow" src="Assets/Apple/Brit-SM-glow.png" alt="Glowing Britney">
+                    <button id="waist-click-area" title="Tap to listen"></button>
+                    
+                    <!-- Text elements -->
+                    <img id="we-text" src="Assets/Apple/We.png" alt="We">
+                    <img id="are-text" src="Assets/Apple/are.png" alt="are">
+                    <img id="sla-text" src="Assets/Apple/Sla.png" alt="Sla">
+                    <img id="ves-text" src="Assets/Apple/ves.png" alt="ves">
+                    <img id="four-text" src="Assets/Apple/4.png" alt="4">
+                    <img id="hoo-text" src="Assets/Apple/Hoo.png" alt="U">
+                </div>
+            </div>
+            
+            <!-- SWIPE HINT -->
+            <div class="swipe-hint">
+                ▲ Swipe up to continue ▲
+            </div>
+        </section>
+        
+        <!-- SECTION 2: MIRROR SEQUENCE -->
+        <section id="section-mirror" class="section" style="background: black; padding: 0;">
+            <video id="horror-video" loop playsinline autoplay>
+                <source src="Assets/Apple/horrorThunder.mp4" type="video/mp4">
+            </video>
+            
+            <!-- QUEEN SEQUENCE IMAGES -->
+            <img id="queen-sm-1" class="queen-img" src="Assets/Apple/Queen-SM-1.jpg">
+            <img id="queen-sm-2" class="queen-img" src="Assets/Apple/Queen-SM-2.jpg">
+            <img id="queen-sm-3" class="queen-img" src="Assets/Apple/Queen-SM-3.jpg">
+            <img id="queen-lg-1" class="queen-img" src="Assets/Apple/Queen-LG-1.jpg">
+            <img id="queen-lg-2" class="queen-img" src="Assets/Apple/Queen-LG-2.jpg">
+            <img id="queen-lg-3" class="queen-img" src="Assets/Apple/Queen-LG-3.jpg">
+            <img id="queen-lg-4" class="queen-img" src="Assets/Apple/Queen-LG-4.jpg">
+            
+            <!-- FINAL IMAGE (Mirror-C.jpg flashes on top) -->
+            <img id="mirror-cracked" class="queen-img" src="Assets/Apple/Mirror-C.jpg">
+            
+            <!-- SUBTITLES -->
+            <div id="subtitle-container">
+                <img id="subtitle-cults" class="subtitle-img" src="Assets/Apple/Cults.png">
+                <img id="subtitle-hypno" class="subtitle-img" src="Assets/Apple/Hypnostalgia.png">
+                <img id="subtitle-obedience" class="subtitle-img" src="Assets/Apple/Obedience.png">
+            </div>
+            
+            <audio id="glass-crack-audio" src="Assets/Apple/obeyglass.mp3" preload="auto"></audio>
+        </section>
+        
+        <!-- SECTION 3: HEYZINE WITH STICKY CONTROLS -->
+        <section id="section-final" class="section">
+            <!-- STICKY CONTROL MANUAL - NEW LAYOUT -->
+            <!-- Rwd  Play
+                      Vol -->
+            <div id="heyzine-controls">
+                <button class="heyzine-btn" id="heyzine-rewind" title="Rewind 10s">
+                    <img src="Assets/Apple/Rewind.png" alt="Rewind">
+                </button>
+                
+                <button class="heyzine-btn" id="heyzine-play" title="Play/Pause">
+                    <img src="Assets/Apple/Play.png" alt="Play" id="heyzine-play-icon">
+                </button>
+                
+                <button class="heyzine-btn" id="heyzine-volume" title="Volume">
+                    <img src="Assets/Apple/Volume-high.png" alt="Volume High" id="heyzine-volume-icon">
+                </button>
+            </div>
+            
+            <iframe class="final-frame" src="https://heyzine.com/flip-book/4f9203e11d.html" 
+                    title="Final Content" 
+                    allowfullscreen>
+            </iframe>
+            
+            <audio id="heyzine-audio" src="Assets/Apple/AppleRead.mp3" preload="auto"></audio>
+            
+            <div style="margin-top: 5px; text-align: center; color: white; font-size: 10px;">
+                Swipe up to continue
+            </div>
+        </section>
+        
+    </div>
+    
+    <script>
+        // ===== DESKTOP BRITNEY ANIMATION CODE =====
+        const TIMING = {
+            heartSpin: 4000,
+            britneyEntrance: 2000,
+            britneySpinStart: 2000,
+            weAppear: 6000,
+            areAppear: 6500,
+            slaAppear: 7000,
+            vesAppear: 9000,
+            fourAppear: 9500,
+            hooAppear: 10000,
+            glowStart: 12000,
+            britneySpinStop: 11000,
+            shakeInterval: 12000,
+            shakeStart: 12000 
+        };
+        
+        // ===== STATE =====
+        let musicActivated = false;
+        let currentBritneyImage = "Assets/Apple/Brit-SM.png";
+        
+        // ===== DOM ELEMENTS =====
+        const music = document.getElementById('music');
+        const britney = document.getElementById('britney');
+        const britneyGlow = document.getElementById('britney-glow');
+        const waistClick = document.getElementById('waist-click-area');
+        const weText = document.getElementById('we-text');
+        const areText = document.getElementById('are-text');
+        const slaText = document.getElementById('sla-text');
+        const vesText = document.getElementById('ves-text');
+        const fourText = document.getElementById('four-text');
+        const hooText = document.getElementById('hoo-text');
+        
+        // ===== INITIALIZE DESKTOP ANIMATIONS =====
+        document.addEventListener('DOMContentLoaded', function() {
+            music.volume = 0.4;
+            setTimeout(() => {
+                document.getElementById('white-loading').style.display = 'none';
+                startAnimationSequence();
+            }, TIMING.heartSpin);
+            
+            setupEventListeners();
+            setupHeyzineControls();
+        });
+        
+        function startAnimationSequence() {
+            // 1. Britney entrance with spin
+            setTimeout(() => {
+                britney.style.animation = `britneyEnter 4s ease-out forwards`;
+                britney.style.opacity = '1';
+            }, TIMING.britneyEntrance);
+            
+            // 2. Stop spinning at specified time
+            setTimeout(() => {
+                britney.style.animation = 'none';
+                britney.style.transition = 'none';
+                britney.style.transform = 'rotateY(0deg)';
+            }, TIMING.britneySpinStop);
+            
+            // 3. Text animations
+            setTimeout(() => animateWe(), TIMING.weAppear);
+            setTimeout(() => animateAre(), TIMING.areAppear);
+            setTimeout(() => animateSla(), TIMING.slaAppear);
+            setTimeout(() => animateVes(), TIMING.vesAppear);
+            setTimeout(() => animateFour(), TIMING.fourAppear);
+            setTimeout(() => animateHoo(), TIMING.hooAppear);
+            
+            // 4. Glow starts
+            setTimeout(() => {
+                startGlow();
+            }, TIMING.glowStart);
+        }
+        
+        function animateWe() {
+            weText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            weText.style.opacity = '1';
+        }
+        
+        function animateAre() {
+            areText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            areText.style.opacity = '1';
+        }
+        
+        function animateSla() {
+            slaText.style.animation = `slideFromRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+            slaText.style.opacity = '1';
+        }
+        
+        function animateVes() {
+            vesText.style.animation = `slideFromRight 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+            vesText.style.opacity = '1';
+        }
+        
+        function animateFour() {
+            fourText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            fourText.style.opacity = '1';
+        }
+        
+        function animateHoo() {
+            hooText.style.animation = `textSpinIn 3s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+            hooText.style.opacity = '1';
+        }
+        
+        function startGlow() {
+            britneyGlow.style.animation = `slowGlowPulse 6s ease-in-out infinite`;
+            britneyGlow.style.opacity = '1';
+            waistClick.style.pointerEvents = 'auto';
+        }
+        
+        function activateMusic() {
+            if (musicActivated) return;
+            musicActivated = true;
+            
+            britneyGlow.style.animation = 'none';
+            britneyGlow.style.opacity = '0';
+            waistClick.style.pointerEvents = 'none';
+            
+            // Switch to off image
+            britney.src = "Assets/Apple/Brit-SM-off.png";
+            currentBritneyImage = "Assets/Apple/Brit-SM-off.png";
+            
+            music.play().catch(e => {
+                console.log("Autoplay blocked - user interaction needed");
+            });
+        }
+        
+        function setupEventListeners() {
+            // Convert click to tap for mobile
+            waistClick.addEventListener('click', activateMusic);
+            waistClick.addEventListener('touchstart', activateMusic);
+        }
+        
+        // ===== MIRROR SEQUENCE =====
+        const horrorVideo = document.getElementById('horror-video');
+        const queenSm1 = document.getElementById('queen-sm-1');
+        const queenSm2 = document.getElementById('queen-sm-2');
+        const queenSm3 = document.getElementById('queen-sm-3');
+        const queenLg1 = document.getElementById('queen-lg-1');
+        const queenLg2 = document.getElementById('queen-lg-2');
+        const queenLg3 = document.getElementById('queen-lg-3');
+        const queenLg4 = document.getElementById('queen-lg-4');
+        const mirrorCracked = document.getElementById('mirror-cracked');
+        const subtitleCults = document.getElementById('subtitle-cults');
+        const subtitleHypno = document.getElementById('subtitle-hypno');
+        const subtitleObedience = document.getElementById('subtitle-obedience');
+        const glassCrackAudio = document.getElementById('glass-crack-audio');
+        const subtitleContainer = document.getElementById('subtitle-container');
+        
+        let mirrorSequenceStarted = false;
+        
+        // Start mirror sequence when section is visible
+        const mirrorObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.id === 'section-mirror' && !mirrorSequenceStarted) {
+                    startMirrorSequence();
+                    mirrorSequenceStarted = true;
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        mirrorObserver.observe(document.getElementById('section-mirror'));
+        
+        function startMirrorSequence() {
+            // Stop Britney music
+            if (music && !music.paused) {
+                music.pause();
+            }
+            
+            // Reset all elements
+            resetMirrorElements();
+            
+            // 1. Ensure video is visible and playing
+            horrorVideo.style.opacity = '1';
+            
+            // Force video to play with muted attribute for autoplay
+            horrorVideo.play().catch(e => {
+                console.log("Video play error:", e);
+                // Try loading and playing again
+                horrorVideo.load();
+                horrorVideo.play().catch(e2 => console.log("Second attempt failed:", e2));
+            });
+            
+            // 2. After 3 seconds STATIC (no movement), fade out - ORIGINAL TIMING
+            setTimeout(() => {
+                horrorVideo.style.opacity = '0'; // Fade to invisible
+                
+                // 3. Start queen sequence after fade begins - ORIGINAL TIMING
+                setTimeout(() => {
+                    startQueenSequence();
+                }, 500);
+            }, 4000); // 3000ms = 3 seconds static + 1000ms from original
+        }
+        
+        function resetMirrorElements() {
+            // Hide all queen images AND the final mirror-cracked image
+            [queenSm1, queenSm2, queenSm3, queenLg1, queenLg2, queenLg3, queenLg4, mirrorCracked].forEach(img => {
+                img.style.opacity = '0';
+            });
+            
+            // Hide subtitle container and words
+            subtitleContainer.style.opacity = '0';
+            [subtitleCults, subtitleHypno, subtitleObedience].forEach(word => {
+                word.style.opacity = '0';
+            });
+        }
+        
+        function startQueenSequence() {
+            // QUEEN SM SEQUENCE (each for 1.5 seconds) - ORIGINAL TIMING
+            setTimeout(() => { queenSm1.style.opacity = '1'; }, 2500);
+            setTimeout(() => { queenSm1.style.opacity = '0'; queenSm2.style.opacity = '1'; }, 4000);
+            setTimeout(() => { queenSm2.style.opacity = '0'; queenSm3.style.opacity = '1'; }, 5500);
+            
+            // Start subtitle sequence - ORIGINAL TIMING
+            setTimeout(() => {
+                subtitleContainer.style.opacity = '1';
+                startSubtitleSequence();
+            }, 3000);
+            
+            // QUEEN LG SEQUENCE - ORIGINAL TIMING
+            setTimeout(() => { queenSm3.style.opacity = '0'; queenLg1.style.opacity = '1'; }, 7000);
+            setTimeout(() => { queenLg1.style.opacity = '0'; queenLg2.style.opacity = '1'; }, 8500);
+            setTimeout(() => { queenLg2.style.opacity = '0'; queenLg3.style.opacity = '1'; }, 10000);
+            setTimeout(() => { queenLg3.style.opacity = '0'; queenLg4.style.opacity = '1'; }, 11500);
+            
+                        // FLASH cracked mirror on top of last queen image
+            setTimeout(() => {
+                // FLASH the cracked mirror first
+                mirrorCracked.style.opacity = '1';
+                mirrorCracked.style.animation = 'flash 0.2s';
+                
+                // Keep the cracked mirror visible
+                setTimeout(() => {
+                    mirrorCracked.style.animation = 'none';
+                    mirrorCracked.style.opacity = '1';
+                }, 200);
+                
+            }, 12500); // Mirror cracks at 12500ms
+            
+            // Play glass crack sound - SEPARATE TIMING
+            setTimeout(() => {
+                glassCrackAudio.play().catch(e => console.log("Audio autoplay blocked"));
+            }, 7500); // Audio plays 200ms BEFORE mirror crack (12500 - 200 = 12300)// Same 10.5 seconds total as desktop
+        }
+        
+        function startSubtitleSequence() {
+            // Show first word
+            subtitleCults.style.opacity = '1';
+            
+            // Sequence: show one, hide it, show next, etc. - ORIGINAL TIMING
+            setTimeout(() => {
+                subtitleCults.style.opacity = '0';
+                subtitleHypno.style.opacity = '1';
+            }, 2000);
+            
+            setTimeout(() => {
+                subtitleHypno.style.opacity = '0';
+                subtitleObedience.style.opacity = '1';
+            }, 4500);
+            
+            setTimeout(() => {
+                subtitleObedience.style.opacity = '0';
+            }, 7000);
+        }
+        
+        // ===== HEYZINE STICKY CONTROLS =====
+        function setupHeyzineControls() {
+            const audio = document.getElementById('heyzine-audio');
+            const playBtn = document.getElementById('heyzine-play');
+            const playIcon = document.getElementById('heyzine-play-icon');
+            const rewindBtn = document.getElementById('heyzine-rewind');
+            const volumeBtn = document.getElementById('heyzine-volume');
+            const volumeIcon = document.getElementById('heyzine-volume-icon');
+            
+            // Set initial volume
+            audio.volume = 1.0; // Start at max volume
+            
+            // Volume icons array (5 variations)
+            const volumeIcons = [
+                "Assets/Apple/Volume-mute.png",     // 0: Mute
+                "Assets/Apple/Volume-low.png",      // 1: Low
+                "Assets/Apple/Volume-mid.png", // 2: Medium-Low
+                "Assets/Apple/Volume-high.png", // 3: Medium-High
+                "Assets/Apple/Volume-loud.png"      // 4: High
+            ];
+            
+            let currentVolumeLevel = 4; // Start at high (index 4)
+            
+            // Update volume icon based on current level
+            function updateVolumeIcon() {
+                volumeIcon.src = volumeIcons[currentVolumeLevel];
+                volumeBtn.title = `Volume: ${currentVolumeLevel === 0 ? 'Mute' : currentVolumeLevel * 25 + '%'}`;
+            }
+            
+            // Initialize volume icon
+            updateVolumeIcon();
+            
+            // Play/Pause
+            playBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                    playIcon.src = "Assets/Apple/Pause.png";
+                } else {
+                    audio.pause();
+                    playIcon.src = "Assets/Apple/Play.png";
+                }
+            });
+            
+            // Rewind 10 seconds
+            rewindBtn.addEventListener('click', function() {
+                audio.currentTime = Math.max(0, audio.currentTime - 10);
+            });
+            
+            // Volume button cycles through 5 levels
+            volumeBtn.addEventListener('click', function() {
+                // Cycle to next volume level
+                currentVolumeLevel = (currentVolumeLevel - 1 + 5) % 5;
+                
+                // Set volume based on level
+                switch(currentVolumeLevel) {
+                    case 0: // Mute
+                        audio.volume = 0;
+                        break;
+                    case 1: // Low
+                        audio.volume = 0.25;
+                        break;
+                    case 2: // Medium-Low
+                        audio.volume = 0.5;
+                        break;
+                    case 3: // Medium-High
+                        audio.volume = 0.75;
+                        break;
+                    case 4: // High
+                        audio.volume = 1.0;
+                        break;
+                }
+                
+                // Update icon
+                updateVolumeIcon();
+            });
+            
+            // Update controls when heyzine section is visible
+            const heyzineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.target.id === 'section-final') {
+                        // Show controls
+                        document.getElementById('heyzine-controls').style.display = 'grid';
+                    } else {
+                        // Hide controls when not in heyzine section
+                        document.getElementById('heyzine-controls').style.display = 'none';
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            heyzineObserver.observe(document.getElementById('section-final'));
+        }
+        
+        // ===== SWIPE NAVIGATION =====
+        let startY;
+        const sections = document.querySelectorAll('.section');
+        let currentSection = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            if (!startY) return;
+            
+            const endY = e.changedTouches[0].clientY;
+            const diffY = startY - endY;
+            
+            // Swipe down (move to next section)
+            if (diffY > 50 && currentSection < sections.length - 1) {
+                currentSection++;
+                sections[currentSection].scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Swipe up (move to previous section)
+            if (diffY < -50 && currentSection > 0) {
+                currentSection--;
+                sections[currentSection].scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            startY = null;
+        });
+    </script>
+        <div id="white-loading">
+        <img src="Assets/Apple/BOS_Heart_LogoGrow.gif" alt="Loading">
+    </div>
+</body>
+</html>
