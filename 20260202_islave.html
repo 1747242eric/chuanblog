@@ -5,27 +5,31 @@
 // Add to very top of <head> section
 window.addEventListener('beforeunload', function() {
     // Force-stop all audio when leaving page
-    document.querySelectorAll('audio').forEach(a => {
-        a.pause();
-        a.currentTime = 0;
-    });
-});
-</script>
-    <!-- Mobile Detection & Redirect -->
+        <!-- Mobile Detection & Redirect - UPDATED VERSION -->
 <script>
-    (function() {
-        // Check if mobile device or small screen
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Skip if already on mobile page or if disabled via query param
+        if (window.location.pathname.includes('-mobile') || 
+            window.location.search.includes('disable-redirect')) {
+            return;
+        }
+        
+        // Mobile detection
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isSmallScreen = window.innerWidth <= 768;
         
-        // If mobile or small screen, redirect to mobile version
+        // If mobile OR small screen AND not already on mobile page
         if (isMobile || isSmallScreen) {
-            // Check if we're already on mobile page to avoid infinite redirect
-            if (!window.location.pathname.includes('mobile')) {
-                window.location.href = window.location.pathname.replace('.html', '-mobile.html') || 'mobile.html';
-            }
+            console.log('Mobile detected, redirecting...');
+            const currentPath = window.location.pathname;
+            const mobilePath = currentPath.replace('.html', '-mobile.html');
+            
+            // Use full URL for redirect
+            const baseUrl = window.location.origin;
+            window.location.href = baseUrl + mobilePath;
         }
-    })();
+    });
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

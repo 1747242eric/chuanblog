@@ -1,0 +1,21 @@
+# netlify.toml
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/assets/*"
+  to = "/Assets/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/apple/*"
+  to = "/Assets/Apple/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/apple/*"
+  to = "/Assets/Apple/:splat"
+  status = 200
+  force = true
