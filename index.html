@@ -1015,7 +1015,7 @@
     <div class="blog-horizontal-grid" id="blogGrid">
         <!-- Blog Column 1 -->
         <div class="blog-column" data-title="iSlave" data-date="2025-03-15" data-views="1200">
-            <a href="20260202_islave.html" class="blog-card">
+            <a href="20260202_islave.html" class="blog-card" id="islave-link">
                 <div class="image-container">
                     <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003A.jpg" alt="Apple Blog" class="duotone-image">
                     <img src="Assets/Eric-Chuan-AppleMustBuy-BOS003B.jpg" alt="Apple Blog" class="color-image">
@@ -1148,7 +1148,21 @@ if (mobileHamburger) {
                 });
             }
         });
-
+            // ===== MOBILE-AWARE BLOG LINK =====
+document.addEventListener('DOMContentLoaded', function() {
+    const islaveLink = document.getElementById('islave-link');
+    if (!islaveLink) return;
+    
+    // Check if mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isSmallScreen = window.innerWidth <= 768;
+    
+    // If mobile or small screen, change link to mobile version
+    if (isMobile || isSmallScreen) {
+        islaveLink.href = "20260202_islave-mobile.html";
+        console.log('Mobile detected: Changing blog link to mobile version');
+    }
+});
     </script>
 </body>
 </html>
