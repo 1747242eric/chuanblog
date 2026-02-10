@@ -2,26 +2,7 @@
 <html lang="en">
 <head>
     <!-- In BOTH 20260202_islave.html AND 20260202_islave-mobile.html -->
-<script>
-// Add this at the TOP of <head> (before everything else)
-window.addEventListener('beforeunload', function() {
-    // Force stop ALL media
-    document.querySelectorAll('video, audio').forEach(media => {
-        media.pause();
-        media.currentTime = 0;
-        media.src = ''; // Clear source
-    });
-});
 
-// Also stop when page is hidden
-document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        document.querySelectorAll('video, audio').forEach(media => {
-            media.pause();
-        });
-    }
-});
-</script>
     <script>
 // Add to very top of <head> section
 window.addEventListener('beforeunload', function() {
@@ -561,7 +542,7 @@ window.addEventListener('beforeunload', function() {
         
         <!-- SECTION 2: MIRROR SEQUENCE -->
         <section id="section-mirror" class="section" style="background: black; padding: 0;">
-            <video id="horror-video" loop playsinline autoplay>
+            <video id="horror-video" loop playsinline muted preload="none">
                 <source src="Assets/Apple/horrorThunder.mp4" type="video/mp4">
             </video>
             
@@ -642,6 +623,24 @@ function scaleBritneyForScreen() {
     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
     console.log('Scaled Britney to:', scale);
 }
+    // Run scaling
+    scaleBritneyForScreen();
+    
+    // Run on resize and orientation change
+    window.addEventListener('resize', scaleBritneyForScreen);
+    window.addEventListener('orientationchange', function() {
+        setTimeout(scaleBritneyForScreen, 300);
+    });
+    
+    // Rest of your code...
+    music.volume = 0.4;
+    setTimeout(() => {
+        document.getElementById('white-loading').style.display = 'none';
+        startAnimationSequence();
+    }, TIMING.heartSpin);
+    
+    setupEventListeners();
+    setupHeyzineControls();
 
 // Run on load and resize
 window.addEventListener('load', scaleBritneyForScreen);
@@ -680,18 +679,49 @@ window.addEventListener('orientationchange', scaleBritneyForScreen);
         const vesText = document.getElementById('ves-text');
         const fourText = document.getElementById('four-text');
         const hooText = document.getElementById('hoo-text');
-        
+      
         // ===== INITIALIZE DESKTOP ANIMATIONS =====
-        document.addEventListener('DOMContentLoaded', function() {
-            music.volume = 0.4;
-            setTimeout(() => {
-                document.getElementById('white-loading').style.display = 'none';
-                startAnimationSequence();
-            }, TIMING.heartSpin);
-            
-            setupEventListeners();
-            setupHeyzineControls();
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // ===== ADD SCALING FUNCTION HERE =====
+    function scaleBritneyForScreen() {
+        const stage = document.getElementById('animation-stage');
+        if (!stage) return;
+        
+        const screenHeight = window.innerHeight;
+        const screenWidth = window.innerWidth;
+        
+        // Calculate scale factor (your design is ~900px tall)
+        const baseHeight = 900; // Your original design height
+        let scale = screenHeight / baseHeight;
+        
+        // Limit scaling
+        scale = Math.min(scale, 0.8); // Never larger than 80%
+        scale = Math.max(scale, 0.5); // Never smaller than 50%
+        
+        // Apply scaling
+        stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        console.log('Scaled Britney to:', scale);
+    }
+    
+    // Run scaling
+    scaleBritneyForScreen();
+    
+    // Run on resize and orientation change
+    window.addEventListener('resize', scaleBritneyForScreen);
+    window.addEventListener('orientationchange', function() {
+        setTimeout(scaleBritneyForScreen, 300);
+    });
+    
+    // Rest of your code...
+    music.volume = 0.4;
+    setTimeout(() => {
+        document.getElementById('white-loading').style.display = 'none';
+        startAnimationSequence();
+    }, TIMING.heartSpin);
+    
+    setupEventListeners();
+    setupHeyzineControls();
+});
         
         function startAnimationSequence() {
             // 1. Britney entrance with spin
@@ -811,35 +841,43 @@ window.addEventListener('orientationchange', scaleBritneyForScreen);
         mirrorObserver.observe(document.getElementById('section-mirror'));
         
         function startMirrorSequence() {
-            // Stop Britney music
-            if (music && !music.paused) {
-                music.pause();
-            }
-            
-            // Reset all elements
-            resetMirrorElements();
-            
-            // 1. Ensure video is visible and playing
-            horrorVideo.style.opacity = '1';
-            
-            // Force video to play with muted attribute for autoplay
-            horrorVideo.play().catch(e => {
-                console.log("Video play error:", e);
-                // Try loading and playing again
-                horrorVideo.load();
-                horrorVideo.play().catch(e2 => console.log("Second attempt failed:", e2));
-            });
-            
-            // 2. After 3 seconds STATIC (no movement), fade out - ORIGINAL TIMING
-            setTimeout(() => {
-                horrorVideo.style.opacity = '0'; // Fade to invisible
-                
-                // 3. Start queen sequence after fade begins - ORIGINAL TIMING
-                setTimeout(() => {
-                    startQueenSequence();
-                }, 500);
-            }, 4000); // 3000ms = 3 seconds static + 1000ms from original
-        }
+    // Stop Britney music
+    if (music && !music.paused) {
+        music.pause();
+    }
+    
+    // Reset all elements
+    resetMirrorElements();
+    
+    // 1. Ensure video is visible
+    horrorVideo.style.opacity = '1';
+    
+    // 2. Load video but DON'T autoplay immediately
+    horrorVideo.load();
+    
+    // 3. Wait a moment, then play (muted videos can autoplay on iOS)
+    setTimeout(() => {
+        horrorVideo.play().catch(e => {
+            console.log("Video play error:", e);
+        });
+    }, 500);
+    
+    // 4. After 3 seconds STATIC, fade out - ORIGINAL TIMING
+    setTimeout(() => {
+        horrorVideo.style.opacity = '0'; // Fade to invisible
+        
+        // 5. Stop the video when faded out
+        setTimeout(() => {
+            horrorVideo.pause();
+            horrorVideo.currentTime = 0;
+        }, 1000);
+        
+        // 6. Start queen sequence after fade begins
+        setTimeout(() => {
+            startQueenSequence();
+        }, 500);
+    }, 4000);
+}
         
         function resetMirrorElements() {
             // Hide all queen images AND the final mirror-cracked image
