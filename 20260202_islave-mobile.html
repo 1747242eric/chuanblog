@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- In BOTH 20260202_islave.html AND 20260202_islave-mobile.html -->
+<script>
+// Add this at the TOP of <head> (before everything else)
+window.addEventListener('beforeunload', function() {
+    // Force stop ALL media
+    document.querySelectorAll('video, audio').forEach(media => {
+        media.pause();
+        media.currentTime = 0;
+        media.src = ''; // Clear source
+    });
+});
+
+// Also stop when page is hidden
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        document.querySelectorAll('video, audio').forEach(media => {
+            media.pause();
+        });
+    }
+});
+</script>
     <script>
 // Add to very top of <head> section
 window.addEventListener('beforeunload', function() {
@@ -600,6 +621,33 @@ window.addEventListener('beforeunload', function() {
     </div>
     
     <script>
+        <script>
+// Add to your mobile page JavaScript
+function scaleBritneyForScreen() {
+    const stage = document.getElementById('animation-stage');
+    if (!stage) return;
+    
+    const screenHeight = window.innerHeight;
+    const screenWidth = window.innerWidth;
+    
+    // Calculate scale factor (your design is ~900px tall)
+    const baseHeight = 900; // Your original design height
+    let scale = screenHeight / baseHeight;
+    
+    // Limit scaling
+    scale = Math.min(scale, 0.8); // Never larger than 80%
+    scale = Math.max(scale, 0.5); // Never smaller than 50%
+    
+    // Apply scaling
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    console.log('Scaled Britney to:', scale);
+}
+
+// Run on load and resize
+window.addEventListener('load', scaleBritneyForScreen);
+window.addEventListener('resize', scaleBritneyForScreen);
+window.addEventListener('orientationchange', scaleBritneyForScreen);
+</script>
         // ===== DESKTOP BRITNEY ANIMATION CODE =====
         const TIMING = {
             heartSpin: 4000,
