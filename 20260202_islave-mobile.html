@@ -2,7 +2,26 @@
 <html lang="en">
 <head>
     <!-- In BOTH 20260202_islave.html AND 20260202_islave-mobile.html -->
+<script>
+// Add this at the TOP of <head> (before everything else)
+window.addEventListener('beforeunload', function() {
+    // Force stop ALL media
+    document.querySelectorAll('video, audio').forEach(media => {
+        media.pause();
+        media.currentTime = 0;
+        media.src = ''; // Clear source
+    });
+});
 
+// Also stop when page is hidden
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        document.querySelectorAll('video, audio').forEach(media => {
+            media.pause();
+        });
+    }
+});
+</script>
     <script>
 // Add to very top of <head> section
 window.addEventListener('beforeunload', function() {
@@ -623,24 +642,6 @@ function scaleBritneyForScreen() {
     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
     console.log('Scaled Britney to:', scale);
 }
-    // Run scaling
-    scaleBritneyForScreen();
-    
-    // Run on resize and orientation change
-    window.addEventListener('resize', scaleBritneyForScreen);
-    window.addEventListener('orientationchange', function() {
-        setTimeout(scaleBritneyForScreen, 300);
-    });
-    
-    // Rest of your code...
-    music.volume = 0.4;
-    setTimeout(() => {
-        document.getElementById('white-loading').style.display = 'none';
-        startAnimationSequence();
-    }, TIMING.heartSpin);
-    
-    setupEventListeners();
-    setupHeyzineControls();
 
 // Run on load and resize
 window.addEventListener('load', scaleBritneyForScreen);
