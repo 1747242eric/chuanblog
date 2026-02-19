@@ -612,19 +612,68 @@ window.addEventListener('beforeunload', function() {
             <!-- STICKY CONTROL MANUAL - NEW LAYOUT -->
             <!-- Rwd  Play
                       Vol -->
-            <div id="heyzine-controls">
-                <button class="heyzine-btn" id="heyzine-rewind" title="Rewind 10s">
-                    <img src="Assets/Apple/Rewind.png" alt="Rewind">
-                </button>
-                
-                <button class="heyzine-btn" id="heyzine-play" title="Play/Pause">
-                    <img src="Assets/Apple/Play.png" alt="Play" id="heyzine-play-icon">
-                </button>
-                
-                <button class="heyzine-btn" id="heyzine-volume" title="Volume">
-                    <img src="Assets/Apple/Volume-high.png" alt="Volume High" id="heyzine-volume-icon">
-                </button>
-            </div>
+                       <!-- STICKY CONTROL MANUAL - NEW LAYOUT WITH HOME BUTTON -->
+              <!-- Rwd  Play
+                        Vol  Home -->
+              <div id="heyzine-controls" style="
+                  position: fixed;
+                  top: 20px;
+                  right: 20px;
+                  z-index: 1000;
+                  display: grid;
+                  grid-template-columns: auto auto;
+                  grid-template-rows: auto auto auto;
+                  gap: 5px;
+                  align-items: start;
+                  justify-items: start;
+              ">
+                  <button class="heyzine-btn" id="heyzine-rewind" title="Rewind 10s" style="grid-column: 1; grid-row: 1;">
+                      <img src="Assets/Apple/Rewind.png" alt="Rewind">
+                  </button>
+                  
+                  <button class="heyzine-btn" id="heyzine-play" title="Play/Pause" style="grid-column: 2; grid-row: 1;">
+                      <img src="Assets/Apple/Play.png" alt="Play" id="heyzine-play-icon">
+                  </button>
+                  
+                  <button class="heyzine-btn" id="heyzine-volume" title="Volume" style="grid-column: 2; grid-row: 2;">
+                      <img src="Assets/Apple/Volume-high.png" alt="Volume High" id="heyzine-volume-icon">
+                  </button>
+                  
+                  <!-- HOME BUTTON - Now under volume button -->
+                  <a href="https://blogonsleeve.com" id="heyzine-home" class="heyzine-btn" title="Blog on Sleeve" style="
+                      grid-column: 2;
+                      grid-row: 3;
+                      text-decoration: none;
+                      position: relative;
+                      display: block;
+                  ">
+                      <img src="Assets/Apple/blog.png" alt="Blog on Sleeve" style="
+                          width: 43.5px;
+                          height: 50px;
+                          object-fit: contain;
+                          display: block;
+                      ">
+                      <span id="home-bubble-mobile" style="
+                          position: absolute;
+                          top: -8px;
+                          right: -5px;
+                          background: black;
+                          color: #FFD700;
+                          font-size: 8px;
+                          font-weight: bold;
+                          padding: 2px 4px;
+                          border-radius: 10px;
+                          white-space: nowrap;
+                          box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                          font-family: Arial, sans-serif;
+                          letter-spacing: 0.5px;
+                          opacity: 0;
+                          transition: opacity 0.2s ease;
+                          pointer-events: none;
+                          z-index: 1001;
+                      ">Blog on Sleeve</span>
+                  </a>
+              </div>
             
             <iframe class="final-frame" src="https://heyzine.com/flip-book/4f9203e11d.html" 
                     title="Final Content" 
@@ -637,8 +686,29 @@ window.addEventListener('beforeunload', function() {
                 Swipe up to continue
             </div>
         </section>
-        
-    </div>
+ </div>  <!-- This closes the mobile-container div -->
+      
+      </div>
+      
+      <!-- COPYRIGHT/DISCLAIMER - 6pt for mobile -->
+      <div id="copyright-mobile" style="
+          position: fixed;
+          bottom: 5px;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          color: #999;
+          font-size: 6pt;
+          font-family: Arial, Helvetica, sans-serif;
+          z-index: 10000;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s;
+          letter-spacing: 0.3px;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      ">
+          © 2026 Blog on Sleeve / Eric Chuan. All rights reserved. This interactive experience is a work of artistic expression and social commentary.
+      </div>
     
     <script>
         
@@ -700,6 +770,7 @@ window.addEventListener('orientationchange', scaleBritneyForScreen);
         const vesText = document.getElementById('ves-text');
         const fourText = document.getElementById('four-text');
         const hooText = document.getElementById('hoo-text');
+        const copyright = document.getElementById('copyright-mobile');
       
         // ===== INITIALIZE DESKTOP ANIMATIONS =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -743,7 +814,68 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     setupHeyzineControls();
 });
-        
+                      // Setup home button for mobile
+      function setupMobileHomeButton() {
+          const homeButton = document.getElementById('home-button-mobile');
+          const homeBubble = document.getElementById('home-bubble-mobile');
+          
+          if (homeButton && homeBubble) {
+              // Show home button when in Scene 2 or 3
+              const mirrorSection = document.getElementById('section-mirror');
+              const finalSection = document.getElementById('section-final');
+              
+              const sectionObserver = new IntersectionObserver((entries) => {
+                  entries.forEach(entry => {
+                      if (entry.isIntersecting) {
+                          // Show home button in mirror and final sections
+                          if (entry.target.id === 'section-mirror' || entry.target.id === 'section-final') {
+                              homeButton.style.opacity = '1';
+                              homeButton.style.pointerEvents = 'auto';
+                              copyright.style.opacity = '1';
+                          }
+                      } else {
+                          // Hide if neither section is visible
+                          const mirrorVisible = mirrorSection.getBoundingClientRect().top < window.innerHeight && 
+                                               mirrorSection.getBoundingClientRect().bottom > 0;
+                          const finalVisible = finalSection.getBoundingClientRect().top < window.innerHeight && 
+                                              finalSection.getBoundingClientRect().bottom > 0;
+                          
+                          if (!mirrorVisible && !finalVisible) {
+                              homeButton.style.opacity = '0';
+                              homeButton.style.pointerEvents = 'none';
+                              copyright.style.opacity = '0';
+                          }
+                      }
+                  });
+              }, { threshold: 0.3 });
+              
+              sectionObserver.observe(mirrorSection);
+              sectionObserver.observe(finalSection);
+              
+              // Hover/touch effects
+              homeButton.addEventListener('mouseenter', function() {
+                  homeBubble.style.opacity = '1';
+              });
+              
+              homeButton.addEventListener('mouseleave', function() {
+                  homeBubble.style.opacity = '0';
+              });
+              
+              // For touch devices
+              homeButton.addEventListener('touchstart', function(e) {
+                  e.preventDefault();
+                  homeBubble.style.opacity = '1';
+                  setTimeout(() => {
+                      homeBubble.style.opacity = '0';
+                  }, 2000);
+              });
+          }
+      }
+      
+      // Call it
+      setTimeout(function() {
+          setupMobileHomeButton();
+      }, 1000);
         function startAnimationSequence() {
             // 1. Britney entrance with spin
             setTimeout(() => {
@@ -807,7 +939,28 @@ document.addEventListener('DOMContentLoaded', function() {
             britneyGlow.style.opacity = '1';
             waistClick.style.pointerEvents = 'auto';
         }
-        
+                      // Home button hover effect
+              const homeBtn = document.getElementById('heyzine-home');
+              const homeBubble = document.getElementById('home-bubble-mobile');
+              
+              if (homeBtn && homeBubble) {
+                  homeBtn.addEventListener('mouseenter', function() {
+                      homeBubble.style.opacity = '1';
+                  });
+                  
+                  homeBtn.addEventListener('mouseleave', function() {
+                      homeBubble.style.opacity = '0';
+                  });
+                  
+                  // For touch devices
+                  homeBtn.addEventListener('touchstart', function(e) {
+                      e.preventDefault();
+                      homeBubble.style.opacity = '1';
+                      setTimeout(() => {
+                          homeBubble.style.opacity = '0';
+                      }, 2000);
+                  });
+              }
         function activateMusic() {
             if (musicActivated) return;
             musicActivated = true;
